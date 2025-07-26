@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>HP+ Premium</title>
+
+  <!-- Poppins and Hind Siliguri Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      background: #0f1f0f;
+      color: #d4fcd4;
+      overflow: hidden;
+    }
+
+    .channel-header {
+      background-color: #004d00;
+      color: #d4fcd4;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+
+    .channel-header video {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-right: 12px;
+      object-fit: cover;
+    }
+
+    .channel-name {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .posts {
+      max-width: 600px;
+      margin: 90px auto 0;
+      padding: 16px;
+    }
+
+    .post {
+      background: #1a331a;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .post-text {
+      font-family: 'Hind Siliguri', sans-serif;
+    }
+
+    .post-date {
+      font-size: 12px;
+      color: #88cc88;
+      margin-bottom: 6px;
+    }
+
+    .post img {
+      margin-top: 10px;
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    .login-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000000f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .login-box {
+      background: #003300;
+      padding: 24px;
+      border-radius: 10px;
+      max-width: 300px;
+      width: 90%;
+      box-shadow: 0 0 10px #00ff00aa;
+      color: #d4fcd4;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: #002200;
+      border: 1px solid #00ff00;
+      border-radius: 6px;
+      color: #d4fcd4;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .login-box button {
+      width: 100%;
+      margin-top: 14px;
+      padding: 10px;
+      background: #00aa00;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      .posts {
+        padding: 12px;
+      }
+    }
+
+    a {
+      color: #88ff88;
+      text-decoration: none;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-overlay" id="login-overlay">
+    <div class="login-box">
+      <h3>Welcome to HP+ [PREMIUM]</h3>
+      <input type="text" id="name" placeholder="Your Name" />
+      <input type="email" id="gmail" placeholder="Your Gmail" />
+      <input type="text" id="access" placeholder="Access Code" />
+      <button onclick="validateLogin()">Enter</button>
+    </div>
+  </div>
+
+  <div class="channel-header">
+    <video src="logo.mp4" autoplay muted loop></video>
+    <div class="channel-name">🩵 HP+ [PREMIUM] 🩵</div>
+  </div>
+
+  <div class="posts" id="posts-container">
+    <!-- Posts will be loaded here -->
+  </div>
+
+  <script>
+    function validateLogin() {
+      const name = document.getElementById('name').value.trim();
+      const gmail = document.getElementById('gmail').value.trim();
+      const access = document.getElementById('access').value.trim();
+
+      const now = new Date();
+      const correctCode = `${now.getDate()}${now.getMonth() + 1}${now.getFullYear().toString().slice(-2)}`;
+
+      if (!name || !gmail || !access) {
+        alert('All fields required!');
+        return;
+      }
+
+      if (access !== correctCode) {
+        alert('Invalid Access Code!');
+        return;
+      }
+
+      localStorage.setItem('hp_user', JSON.stringify({ name, gmail }));
+      document.getElementById('login-overlay').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const user = localStorage.getItem('hp_user');
+      if (user) {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+const posts = [
+  // Biology First Paper
+  {
+    date: "26 July 2025",
+    text: `
+🔹অধ্যায় ০১ - কোষ ও এর গঠন<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=AcMWgmvo6B8" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=4RZfCT6lkUY" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=pRaj1j8C8bc" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=VRoUUDjtA34" target="_blank">Click Here</a><br>
+◾️Lecture 5: <a href="https://bio2026.github.io/class/?v=gXdV9ZuUrIc" target="_blank">Click Here</a><br>
+◾️Lecture 6: <a href="https://bio2026.github.io/class/?v=i_wbzyXJObU" target="_blank">Click Here</a><br>
+◾️Lecture 7: <a href="https://bio2026.github.io/class/?v=ke74A8TiGFM" target="_blank">Click Here</a><br>
+◾️Lecture 8: <a href="https://bio2026.github.io/class/?v=6Zrn-rR9aFA" target="_blank">Click Here</a><br>
+◾️Lecture 9: <a href="https://bio2026.github.io/class/?v=d6Y5n465mGc" target="_blank">Click Here</a><br>
+◾️Lecture 10: <a href="https://bio2026.github.io/class/?v=e_FjB28vYFA" target="_blank">Click Here</a><br>
+◾️Lecture 11: <a href="https://bio2026.github.io/class/?v=1yemjhby5XE" target="_blank">Click Here</a><br>
+◾️Lecture 12: <a href="https://bio2026.github.io/class/?v=cK4bPceKmz0" target="_blank">Click Here</a><br>
+◾️Lecture 13: <a href="https://bio2026.github.io/class/?v=7BbhWt5YSIc" target="_blank">Click Here</a><br>
+◾️Lecture 14: <a href="https://bio2026.github.io/class/?v=CbH1oAOZW80" target="_blank">Click Here</a><br>
+◾️Lecture 15: <a href="https://bio2026.github.io/class/?v=sUj4EmsIL74" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=-FkRA5gntvI" target="_blank">Click Here</a>
+    `,
+    image: "chap1.1.jpg"
+  },
+  {
+    date: "27 July 2025",
+    text: `
+🔹অধ্যায় ০২ - কোষ বিভাজন<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=3c4dxvcBAcI" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=jc0CQK6ajFI" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=tQw7xfAW9yY" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=Yv5OFHPvJZI" target="_blank">Click Here</a><br>
+◾️Lecture 5: <a href="https://bio2026.github.io/class/?v=aEojPlYsWOI" target="_blank">Click Here</a><br>
+◾️Lecture 6: <a href="https://bio2026.github.io/class/?v=6sbuYftVK2c" target="_blank">Click Here</a><br>
+◾️Lecture 7: <a href="https://bio2026.github.io/class/?v=XUCU4sTJ3Gs" target="_blank">Click Here</a><br>
+◾️Lecture 8: <a href="https://bio2026.github.io/class/?v=Dtbr0U_Uu1U" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap1.2.jpg"
+  },
+  {
+    date: "28 July 2025",
+    text: `
+🔹অধ্যায় ০৩ - কোষ রসায়ন<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=DrXA3XdRG2o" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=PPCN1V1XYTw" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=UiKrV-lc2bo" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=asK_2PiPYek" target="_blank">Click Here</a><br>
+◾️Lecture 5: <a href="https://bio2026.github.io/class/?v=2QfYM3qEyTI" target="_blank">Click Here</a><br>
+◾️Lecture 6: <a href="https://bio2026.github.io/class/?v=YJrKKo7awAM" target="_blank">Click Here</a><br>
+◾️Lecture 7: <a href="https://bio2026.github.io/class/?v=XbnuzwiWJHI" target="_blank">Click Here</a><br>
+◾️Lecture 8: <a href="https://bio2026.github.io/class/?v=Dg_GozeH-Sk" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap1.3.jpg"
+  },
+  {
+    date: "29 July 2025",
+    text: `
+🔹অধ্যায় ০৪ - অণুজীব<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=w-2oH-6-jkM" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=62LohDQQCuk" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=K1lh5_dyFxo" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=EwOo5FaQ4gI" target="_blank">Click Here</a><br>
+◾️Lecture 5: <a href="https://bio2026.github.io/class/?v=OEP8UUm7YSk" target="_blank">Click Here</a><br>
+◾️Lecture 6: <a href="https://bio2026.github.io/class/?v=eQE9hLk0hF4" target="_blank">Click Here</a><br>
+◾️Lecture 7: <a href="https://bio2026.github.io/class/?v=ELWsaCTarn4" target="_blank">Click Here</a><br>
+◾️Lecture 8: <a href="https://bio2026.github.io/class/?v=5_nMvluBXbg" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap1.4.jpg"
+  },
+  {
+    date: "30 July 2025",
+    text: `
+🔹অধ্যায় ০৫ - শৈবাল ও ছত্রাক<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=vwqfWasTZP0" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=FcKqrNvxVdo" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=Uj0cc8iWoqI" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=zFrF-pxDzDM" target="_blank">Click Here</a><br>
+◾️Lecture 5: <a href="https://bio2026.github.io/class/?v=AFFIKsFEAbQ" target="_blank">Click Here</a><br>
+◾️Lecture 6: <a href="https://bio2026.github.io/class/?v=S6Xz8uPWNOs" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap1.5.jpg"
+  },
+  {
+    date: "31 July 2025",
+    text: `
+🔹অধ্যায় ০৬ - ব্রায়োফাইটা ও টেরিডোফাইটা<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=hYC0xGXIOJ0" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=B8LRsbOQ26U" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=TXmxc7XIGx0" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap1.6.jpg"
+  },
+  {
+    date: "1 August 2025",
+    text: `
+🔹অধ্যায় ০৭ - নগ্নবীজী ও আবৃতবীজী<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=TUPKW49U-ko" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=iAteASCZcJA" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=CGU0L8i1yoY" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=j-yh4ujttQs" target="_blank">Click Here</a><br>
+◾️Lecture 5: <a href="https://bio2026.github.io/class/?v=LwblC43g8wM" target="_blank">Click Here</a><br>
+◾️Lecture 6: <a href="https://bio2026.github.io/class/?v=aYbCZati--Q" target="_blank">Click Here</a><br>
+◾️Lecture 7: <a href="https://bio2026.github.io/class/?v=ldHEWOrAQQ8" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap1.7.jpg"
+  },
+  {
+    date: "2 August 2025",
+    text: `
+🔹অধ্যায় ০৮ - টিস্যু ও টিস্যুতন্ত্র<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=zvyUVJ6yZJY" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=xRAEePh0bwc" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=4wFBxV8cMb0" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=m_nW40Dx-M0" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap1.8.jpg"
+  },
+  {
+    date: "3 August 2025",
+    text: `
+🔹অধ্যায় ০৯ - উদ্ভিদ শারীরতত্ত্ব<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=uqAu9xqCEyY" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=4gm_mtXr8BU" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=Br-hrLpPIkg" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=zuj5u9TgNj8" target="_blank">Click Here</a><br>
+◾️Lecture 5: <a href="https://bio2026.github.io/class/?v=WjGpHlWn2Mo" target="_blank">Click Here</a><br>
+◾️Lecture 6: <a href="https://bio2026.github.io/class/?v=nhfDd2kMKmk" target="_blank">Click Here</a><br>
+◾️Lecture 7: <a href="https://bio2026.github.io/class/?v=-1OdMx0NOr8" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap1.9.jpg"
+  },
+  {
+    date: "4 August 2025",
+    text: `
+🔹অধ্যায় ১০ - উদ্ভিদ প্রজনন<br><br>
+
+◾️Lecture 1: Coming Soon<br>
+◾️Lecture 2: Coming Soon<br>
+◾️Lecture 3: Coming Soon<br>
+◾️Lecture 4: Coming Soon<br>
+◾️Lecture 5: Coming Soon<br>
+◾️Lecture 6: Coming Soon<br>
+◾️Lecture 7: Coming Soon<br>
+◾️Lecture 8: Coming Soon<br><br>
+🧠 Revision Class: Coming Soon
+    `,
+    image: "chap1.10.jpg"
+  },
+  {
+    date: "5 August 2025",
+    text: `
+🔹অধ্যায় ১১ - জীব প্রযুক্তি<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=0mWL4DWc2NQ" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=qoJa_ocws2w" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=FapUCnmyhz4" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=6wBZyt0wWlY" target="_blank">Click Here</a><br>
+◾️Lecture 5: <a href="https://bio2026.github.io/class/?v=pNJpXfJu2vQ" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap1.11.jpg"
+  },
+  {
+    date: "6 August 2025",
+    text: `
+🔹অধ্যায় ১২ - জীবের পরিবেশ, বিস্তার ও সংরক্ষণ<br><br>
+
+◾️Lecture 1: Coming Soon<br>
+◾️Lecture 2: Coming Soon<br>
+◾️Lecture 3: Coming Soon<br>
+◾️Lecture 4: Coming Soon<br>
+◾️Lecture 5: Coming Soon<br>
+◾️Lecture 6: Coming Soon<br>
+◾️Lecture 7: Coming Soon<br>
+◾️Lecture 8: Coming Soon<br><br>
+🧠 Revision Class: Coming Soon
+    `,
+    image: "chap1.12.jpg"
+  },
+
+  // Biology Second Paper
+  {
+    date: "7 August 2025",
+    text: `
+🔹অধ্যায় ০১ - প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=T6ctqisFSOA" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=AkR89ahaczs" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=eGw5c5wm39M" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=34KzxxdYTqc" target="_blank">Click Here</a><br>
+◾️Lecture 5: <a href="https://bio2026.github.io/class/?v=3U7Hl3YTlFY" target="_blank">Click Here</a><br>
+◾️Lecture 6: <a href="https://bio2026.github.io/class/?v=LRS0JMhrr0Q" target="_blank">Click Here</a><br>
+◾️Lecture 7: <a href="https://bio2026.github.io/class/?v=3s1_5sDkQWE" target="_blank">Click Here</a><br>
+◾️Lecture 8: <a href="https://bio2026.github.io/class/?v=37_djq1MzoY" target="_blank">Click Here</a><br>
+◾️Lecture 9: <a href="https://bio2026.github.io/class/?v=p67_3luIi7s" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap2.1.jpg"
+  },
+  {
+    date: "8 August 2025",
+    text: `
+🔹অধ্যায় ০২ - প্রাণীর পরিচিতি<br><br>
+
+◾️Lecture 1 (হাইড্রা): <a href="https://bio2026.github.io/class/?v=MQRF_6VA5mA" target="_blank">Click Here</a><br>
+◾️Lecture 2 (হাইড্রা): <a href="https://bio2026.github.io/class/?v=y0Ib6x88dW0" target="_blank">Click Here</a><br>
+◾️Lecture 3 (হাইড্রা): <a href="https://bio2026.github.io/class/?v=HpNEd5zaoSk" target="_blank">Click Here</a><br>
+◾️Lecture 4 (হাইড্রা): <a href="https://bio2026.github.io/class/?v=Jup52ikWdKs" target="_blank">Click Here</a><br>
+◾️Lecture 5 (ঘাসফড়িং): <a href="https://bio2026.github.io/class/?v=XDfxYEQUHeo" target="_blank">Click Here</a><br>
+◾️Lecture 6 (ঘাসফড়িং): <a href="https://bio2026.github.io/class/?v=pwFjQEWnUwQ" target="_blank">Click Here</a><br>
+◾️Lecture 7 (ঘাসফড়িং): <a href="https://bio2026.github.io/class/?v=2P3Jb6EBGfc" target="_blank">Click Here</a><br>
+◾️Lecture 8 (ঘাসফড়িং): <a href="https://bio2026.github.io/class/?v=-zVaAW0nl-s" target="_blank">Click Here</a><br>
+◾️Lecture 9 (ঘাসফড়িং): <a href="https://bio2026.github.io/class/?v=s_4ln7zJL8I" target="_blank">Click Here</a><br>
+◾️Lecture 10 (রুই মাছ): <a href="https://bio2026.github.io/class/?v=cFpPJPgqUOY" target="_blank">Click Here</a><br>
+◾️Lecture 11 (রুই মাছ): <a href="https://bio2026.github.io/class/?v=vuF9SiNGBYQ" target="_blank">Click Here</a><br>
+◾️Lecture 12 (রুই মাছ): <a href="https://bio2026.github.io/class/?v=cG8WxgagEPI" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap2.2.jpg"
+  },
+  {
+    date: "9 August 2025",
+    text: `
+🔹অধ্যায় ০৩ - পরিপাক ও শোষণ<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=tObA-QkySIw" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=VM25wyRhHWI" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=EEJbWhntwKM" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=isBQMN1NNgU" target="_blank">Click Here</a><br>
+◾️Lecture 5: <a href="https://bio2026.github.io/class/?v=W6u6mJjzAxw" target="_blank">Click Here</a><br>
+◾️Lecture 6: <a href="https://bio2026.github.io/class/?v=9IKaWW70_Mo" target="_blank">Click Here</a><br>
+◾️Lecture 7: <a href="https://bio2026.github.io/class/?v=pI7dDxsYlJ0" target="_blank">Click Here</a><br>
+◾️Lecture 8: <a href="https://bio2026.github.io/class/?v=XqOajyfJf-g" target="_blank">Click Here</a><br>
+◾️Lecture 9: <a href="https://bio2026.github.io/class/?v=k96RHeVPJPE" target="_blank">Click Here</a><br>
+◾️Lecture 10: <a href="https://bio2026.github.io/class/?v=vceO6zUUbfA" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap2.3.jpg"
+  },
+  {
+    date: "10 August 2025",
+    text: `
+🔹অধ্যায় ০৪ - রক্ত সঞ্চালন<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=nISTg-3Bs3g" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=as-gbAtxwHg" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=nQ--enIHKW8" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=IFBGgYLuYAA" target="_blank">Click Here</a><br>
+◾️Lecture 5: <a href="https://bio2026.github.io/class/?v=werz_imvy2Y" target="_blank">Click Here</a><br>
+◾️Lecture 6: <a href="https://bio2026.github.io/class/?v=XExxw-MIapk" target="_blank">Click Here</a><br>
+◾️Lecture 7: <a href="https://bio2026.github.io/class/?v=d8JytfBzgF4" target="_blank">Click Here</a><br>
+◾️Lecture 8: <a href="https://bio2026.github.io/class/?v=wqJGtdH3eLI" target="_blank">Click Here</a><br>
+◾️Lecture 9: <a href="https://bio2026.github.io/class/?v=6jIe4uO8Upk" target="_blank">Click Here</a><br>
+◾️Lecture 10: <a href="https://bio2026.github.io/class/?v=l0ZvPm-cdlM" target="_blank">Click Here</a><br>
+◾️Lecture 11: <a href="https://bio2026.github.io/class/?v=IO3rvxtcwko" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap2.4.jpg"
+  },
+  {
+    date: "11 August 2025",
+    text: `
+🔹অধ্যায় ০৫ - শ্বসন ও শ্বাসক্রিয়া<br><br>
+
+◾️Lecture 1: <a href="https://bio2026.github.io/class/?v=ax3HmndHKuE" target="_blank">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/class/?v=-on5I4lZk0M" target="_blank">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/class/?v=zHEASKxdB0E" target="_blank">Click Here</a><br>
+◾️Lecture 4: <a href="https://bio2026.github.io/class/?v=uQ2ZGIJhzWM" target="_blank">Click Here</a><br><br>
+🧠 Revision Class: <a href="https://bio2026.github.io/class/?v=example" target="_blank">Click Here</a>
+    `,
+    image: "chap2.5.jpg"
+  },
+  {
+    date: "12 August 2025",
+    text: `
+🔹অধ্যায় ০৬ - বর্জ্য ও নিষ্কাশন<br><br>
+
+◾️Lecture 1: Coming Soon<br>
+◾️Lecture 2: Coming Soon<br>
+◾️Lecture 3: Coming Soon<br>
+◾️Lecture 4: Coming Soon<br>
+◾️Lecture 5: Coming Soon<br>
+◾️Lecture 6: Coming Soon<br>
+◾️Lecture 7: Coming Soon<br>
+◾️Lecture 8: Coming Soon<br><br>
+🧠 Revision Class: Coming Soon
+    `,
+    image: "chap2.6.jpg"
+  },
+  {
+    date: "13 August 2025",
+    text: `
+🔹অধ্যায় ০৭ - চলন ও অঙ্গচালনা<br><br>
+
+◾️Lecture 1: Coming Soon<br>
+◾️Lecture 2: Coming Soon<br>
+◾️Lecture 3: Coming Soon<br>
+◾️Lecture 4: Coming Soon<br>
+◾️Lecture 5: Coming Soon<br>
+◾️Lecture 6: Coming Soon<br>
+◾️Lecture 7: Coming Soon<br>
+◾️Lecture 8: Coming Soon<br><br>
+🧠 Revision Class: Coming Soon
+    `,
+    image: "chap2.7.jpg"
+  },
+  {
+    date: "14 August 2025",
+    text: `
+🔹অধ্যায় ০৮ - সমন্বয় ও নিয়ন্ত্রণ<br><br>
+
+◾️Lecture 1: Coming Soon<br>
+◾️Lecture 2: Coming Soon<br>
+◾️Lecture 3: Coming Soon<br>
+◾️Lecture 4: Coming Soon<br>
+◾️Lecture 5: Coming Soon<br>
+◾️Lecture 6: Coming Soon<br>
+◾️Lecture 7: Coming Soon<br>
+◾️Lecture 8: Coming Soon<br><br>
+🧠 Revision Class: Coming Soon
+    `,
+    image: "chap2.8.jpg"
+  },
+  {
+    date: "15 August 2025",
+    text: `
+🔹অধ্যায় ০৯ - মানব জীবনের ধারাবাহিকতা<br><br>
+
+◾️Lecture 1: Coming Soon<br>
+◾️Lecture 2: Coming Soon<br>
+◾️Lecture 3: Coming Soon<br>
+◾️Lecture 4: Coming Soon<br>
+◾️Lecture 5: Coming Soon<br>
+◾️Lecture 6: Coming Soon<br>
+◾️Lecture 7: Coming Soon<br>
+◾️Lecture 8: Coming Soon<br><br>
+🧠 Revision Class: Coming Soon
+    `,
+    image: "chap2.9.jpg"
+  },
+  {
+    date: "16 August 2025",
+    text: `
+🔹অধ্যায় ১০ - মানবদেহের প্রতিরক্ষা<br><br>
+
+◾️Lecture 1: Coming Soon<br>
+◾️Lecture 2: Coming Soon<br>
+◾️Lecture 3: Coming Soon<br>
+◾️Lecture 4: Coming Soon<br>
+◾️Lecture 5: Coming Soon<br>
+◾️Lecture 6: Coming Soon<br>
+◾️Lecture 7: Coming Soon<br>
+◾️Lecture 8: Coming Soon<br><br>
+🧠 Revision Class: Coming Soon
+    `,
+    image: "chap2.10.jpg"
+  },
+  {
+    date: "17 August 2025",
+    text: `
+🔹অধ্যায় ১১ - জীনতত্ত্ব ও বিবর্তন<br><br>
+
+◾️Lecture 1: Coming Soon<br>
+◾️Lecture 2: Coming Soon<br>
+◾️Lecture 3: Coming Soon<br>
+◾️Lecture 4: Coming Soon<br>
+◾️Lecture 5: Coming Soon<br>
+◾️Lecture 6: Coming Soon<br>
+◾️Lecture 7: Coming Soon<br>
+◾️Lecture 8: Coming Soon<br><br>
+🧠 Revision Class: Coming Soon
+    `,
+    image: "chap2.11.jpg"
+  },
+  {
+    date: "18 August 2025",
+    text: `
+🔹অধ্যায় ১২ - প্রাণীর আচরণ<br><br>
+
+◾️Lecture 1: Coming Soon<br>
+◾️Lecture 2: Coming Soon<br>
+◾️Lecture 3: Coming Soon<br>
+◾️Lecture 4: Coming Soon<br>
+◾️Lecture 5: Coming Soon<br>
+◾️Lecture 6: Coming Soon<br>
+◾️Lecture 7: Coming Soon<br>
+◾️Lecture 8: Coming Soon<br><br>
+🧠 Revision Class: Coming Soon
+    `,
+    image: "chap2.12.jpg"
+  }
+];
+    const container = document.getElementById("posts-container");
+
+    posts.forEach(post => {
+      const div = document.createElement("div");
+      div.className = "post";
+      div.innerHTML = `
+        <div class="post-date">${post.date}</div>
+        <div class="post-text">${post.text}</div>
+        ${post.image ? `<img src="${post.image}" alt="Post Image">` : ""}
+      `;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>
