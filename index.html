@@ -43,6 +43,113 @@
       color: #fff;
       line-height: 1.6;
       overflow-x: hidden;
+      font-size: 16px;
+    }
+
+    /* Coming Soon Styling */
+    .coming-soon {
+      color: #888 !important;
+      cursor: not-allowed;
+      pointer-events: none;
+      text-decoration: none !important;
+    }
+    
+    .coming-soon:hover {
+      color: #888 !important;
+    }
+
+    /* Image Modal Styles */
+    .image-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .image-modal-content {
+      max-width: 90%;
+      max-height: 90%;
+    }
+    
+    .image-modal-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .close-modal:hover {
+      color: #3da6ff;
+    }
+
+    /* Loading Screen Styles */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      display: none;
+    }
+    
+    .loading-content {
+      text-align: center;
+      max-width: 90%;
+    }
+    
+    .loading-content img {
+      max-width: 100%;
+      max-height: 60vh;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .loading-text {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    
+    .loading-bar-container {
+      width: 80%;
+      max-width: 400px;
+      height: 10px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+    
+    .loading-bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #3da6ff, #ff8a00);
+      border-radius: 10px;
+      transition: width 0.1s linear;
     }
 
     /* Login Modal Styles */
@@ -172,10 +279,11 @@
       font-family: 'Hind Siliguri', sans-serif;
       color: #eee;
       line-height: 1.7;
+      font-size: 1.1rem;
     }
 
     .post-date {
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: #88cc88;
       margin-bottom: 10px;
       font-weight: 500;
@@ -186,6 +294,12 @@
       max-width: 100%;
       border-radius: 10px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .post img:hover {
+      transform: scale(1.02);
     }
 
     a {
@@ -193,15 +307,25 @@
       text-decoration: none;
       font-weight: 600;
       transition: all 0.3s ease;
+      padding: 2px 5px;
+      border-radius: 4px;
+      display: inline-block;
+      min-width: 80px;
+      text-align: center;
     }
 
     a:hover {
       color: #3da6ff;
       text-decoration: underline;
+      background: rgba(61, 166, 255, 0.1);
     }
 
     /* Responsive Styles */
     @media (max-width: 768px) {
+      body {
+        font-size: 18px;
+      }
+      
       .posts {
         padding: 15px;
         margin-top: 80px;
@@ -223,9 +347,23 @@
       .channel-name {
         font-size: 1.1rem;
       }
+      
+      .post-text {
+        font-size: 1.2rem;
+      }
+      
+      a {
+        min-width: 100px;
+        padding: 5px 8px;
+        margin: 3px 0;
+      }
     }
 
     @media (max-width: 480px) {
+      body {
+        font-size: 16px;
+      }
+      
       .posts {
         padding: 10px;
       }
@@ -241,35 +379,54 @@
       .login-box h3 {
         font-size: 1.5rem;
       }
+      
+      .post-text {
+        font-size: 1.1rem;
+      }
+      
+      a {
+        min-width: 90px;
+        padding: 4px 6px;
+      }
     }
 
-    /* Block right-click and copy */
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-    });
-
-    document.addEventListener('keydown', function(e) {
-      if (e.ctrlKey && (e.key === 'c' || e.key === 'x' || e.key === 'a')) {
-        e.preventDefault();
-      }
-    });
-
-    /* Block zooming */
-    document.addEventListener('wheel', function(e) {
-      if (e.ctrlKey) {
-        e.preventDefault();
-      }
-    }, { passive: false });
-
-    document.addEventListener('keydown', function(e) {
-      if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '0')) {
-        e.preventDefault();
-      }
-    });
+    /* Notification for Coming Soon */
+    .coming-soon-notification {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.9);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #3da6ff;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+      z-index: 3000;
+      display: none;
+      max-width: 90%;
+      text-align: center;
+    }
+    
+    .coming-soon-notification p {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 15px;
+    }
+    
+    .coming-soon-notification button {
+      background: #3da6ff;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Login Modal -->
   <div class="login-overlay" id="login-overlay">
     <div class="login-box">
       <h3>Welcome to HP+ [PREMIUM]</h3>
@@ -280,8 +437,33 @@
     </div>
   </div>
 
+  <!-- Image Modal -->
+  <div class="image-modal" id="image-modal">
+    <span class="close-modal">&times;</span>
+    <div class="image-modal-content">
+      <img id="modal-image" src="" alt="Enlarged view">
+    </div>
+  </div>
+
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loading-screen">
+    <div class="loading-content">
+      <img id="loading-image" src="" alt="Class Preview">
+      <div class="loading-text" id="loading-text">Loading Class...</div>
+      <div class="loading-bar-container">
+        <div class="loading-bar" id="loading-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coming Soon Notification -->
+  <div class="coming-soon-notification" id="coming-soon-notification">
+    <p>The class is coming soon! If you are facing any issues please contact your admin!</p>
+    <button onclick="closeComingSoonNotification()">OK</button>
+  </div>
+
   <div class="channel-header">
-    <video src="logo.mp4" autoplay muted loop></video>
+    <video src="logo.mp4" autoplay muted loop playsinline></video>
     <div class="channel-name">🩵 HP+ [PREMIUM] 🩵</div>
   </div>
 
@@ -290,6 +472,7 @@
   </div>
 
   <script>
+    // Login validation
     function validateLogin() {
       const name = document.getElementById('name').value.trim();
       const gmail = document.getElementById('gmail').value.trim();
@@ -313,14 +496,95 @@
       document.body.style.overflow = 'auto';
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const user = localStorage.getItem('hp_user');
-      if (user) {
-        document.getElementById('login-overlay').style.display = 'none';
-        document.body.style.overflow = 'auto';
+    // Image modal functionality
+    const imageModal = document.getElementById("image-modal");
+    const modalImg = document.getElementById("modal-image");
+    const closeModal = document.querySelector(".close-modal");
+
+    // When the user clicks on an image in a post
+    document.addEventListener('click', function(e) {
+      if (e.target.tagName === 'IMG' && e.target.closest('.post')) {
+        imageModal.style.display = "flex";
+        modalImg.src = e.target.src;
       }
     });
 
+    // When the user clicks on (x), close the modal
+    closeModal.onclick = function() {
+      imageModal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.addEventListener('click', function(event) {
+      if (event.target === imageModal) {
+        imageModal.style.display = "none";
+      }
+    });
+
+    // Coming soon notification
+    function showComingSoonNotification() {
+      document.getElementById('coming-soon-notification').style.display = 'block';
+    }
+
+    function closeComingSoonNotification() {
+      document.getElementById('coming-soon-notification').style.display = 'none';
+    }
+
+    // Loading screen functionality
+    function showLoadingScreen(imgSrc, text, targetUrl) {
+      const loadingScreen = document.getElementById('loading-screen');
+      const loadingImage = document.getElementById('loading-image');
+      const loadingText = document.getElementById('loading-text');
+      const loadingBar = document.getElementById('loading-bar');
+      
+      loadingBar.style.width = '0%';
+      loadingImage.src = imgSrc || '';
+      loadingText.textContent = text;
+      loadingScreen.style.display = 'flex';
+      
+      let width = 0;
+      const interval = setInterval(() => {
+        width++;
+        loadingBar.style.width = width + '%';
+        
+        if (width >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            window.location.href = targetUrl;
+          }, 100);
+        }
+      }, 30);
+    }
+
+    // Handle link clicks
+    function handleLinkClick(e) {
+      let target = e.target.closest('a');
+      if (!target) return;
+      
+      if (target.textContent.toLowerCase().includes('coming soon') || 
+          target.classList.contains('coming-soon')) {
+        e.preventDefault();
+        showComingSoonNotification();
+        return;
+      }
+      
+      if (target.getAttribute('target') === '_self') {
+        e.preventDefault();
+        
+        const post = target.closest('.post');
+        if (!post) return;
+        
+        let imgSrc = '';
+        const img = post.querySelector('img');
+        if (img) imgSrc = img.src;
+        
+        const chapterInfo = post.querySelector('.post-text').textContent.split('\n')[0].trim();
+        
+        showLoadingScreen(imgSrc, `Loading: ${chapterInfo}`, target.href);
+      }
+    }
+
+    // Posts data
 const posts = [
   // Biology First Paper Revision Classes
   {
@@ -751,17 +1015,62 @@ const posts = [
     image: "chap2.12.jpg"
   }
 ];
-    const container = document.getElementById("posts-container");
 
-    posts.forEach(post => {
-      const div = document.createElement("div");
-      div.className = "post";
-      div.innerHTML = `
-        <div class="post-date">${post.date}</div>
-        <div class="post-text">${post.text}</div>
-        ${post.image ? `<img src="${post.image}" alt="Post Image">` : ""}
-      `;
-      container.appendChild(div);
+    // Initialize the page
+    window.addEventListener('DOMContentLoaded', () => {
+      const user = localStorage.getItem('hp_user');
+      if (user) {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+      
+      // Add click event listener for links
+      document.addEventListener('click', handleLinkClick);
+      
+      // Mark coming soon links
+      document.querySelectorAll('a').forEach(link => {
+        if (link.textContent.toLowerCase().includes('coming soon')) {
+          link.classList.add('coming-soon');
+          link.href = 'javascript:void(0)';
+        }
+      });
+
+      // Render posts
+      const container = document.getElementById("posts-container");
+      posts.forEach(post => {
+        const div = document.createElement("div");
+        div.className = "post";
+        div.innerHTML = `
+          <div class="post-date">${post.date}</div>
+          <div class="post-text">${post.text}</div>
+          ${post.image ? `<img src="${post.image}" alt="Post Image">` : ""}
+        `;
+        container.appendChild(div);
+      });
+    });
+
+    // Block right-click and copy
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && (e.key === 'c' || e.key === 'x' || e.key === 'a')) {
+        e.preventDefault();
+      }
+    });
+
+    /* Block zooming */
+    document.addEventListener('wheel', function(e) {
+      if (e.ctrlKey) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '0')) {
+        e.preventDefault();
+      }
     });
   </script>
 </body>
