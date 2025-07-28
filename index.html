@@ -9,7 +9,7 @@
 
   <!-- Block archive.org -->
   <meta name="archive" content="none">
-  <title>HP+ Premium</title>
+  <title>HP Plus</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -251,12 +251,21 @@
     }
 
     .channel-name {
-      font-size: 1.3rem;
-      font-weight: 700;
-      background: linear-gradient(90deg, #ff8a00, #e52e71);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+  font-size: 1.3rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #ff8a00, #e52e71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-flex;
+  align-items: center;
+}
+
+.verified-icon {
+  width: 18px;
+  height: 18px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
 
     /* Posts Container */
     .posts {
@@ -288,7 +297,13 @@
       margin-bottom: 10px;
       font-weight: 500;
     }
-
+.post-date img.verified-icon {
+  width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  vertical-align: middle;
+  filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+}
     .post img {
       margin-top: 15px;
       max-width: 100%;
@@ -422,14 +437,36 @@
       cursor: pointer;
       font-weight: 600;
     }
-  </style>
+  
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #3da6ff;
+  font-weight: 600;
+}
+
+.verified-icon {
+  width: 14px;
+  height: 14px;
+  filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+}
+
+/* Keep your existing post-date styling but update the color */
+.post-date {
+  font-size: 1rem;
+  color: #3da6ff; /* Changed from #88cc88 to match verified badge */
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+</style>
 </head>
 <body>
 
   <!-- Login Modal -->
   <div class="login-overlay" id="login-overlay">
     <div class="login-box">
-      <h3>Welcome to HP+ [PREMIUM]</h3>
+      <h3>Welcome to HP Plus</h3>
       <input type="text" id="name" placeholder="Your Name" />
       <input type="email" id="gmail" placeholder="Your Gmail" />
       <input type="text" id="access" placeholder="Access Code" />
@@ -458,13 +495,13 @@
 
   <!-- Coming Soon Notification -->
   <div class="coming-soon-notification" id="coming-soon-notification">
-    <p>The class is coming soon! If you are facing any issues please contact your admin!</p>
+    <p>The class will be coming soon! Check back later</p>
     <button onclick="closeComingSoonNotification()">OK</button>
   </div>
 
   <div class="channel-header">
     <video src="logo.mp4" autoplay muted loop playsinline></video>
-    <div class="channel-name">🩵 HP+ [PREMIUM] 🩵</div>
+    <div class="channel-name">HP Plus <img src="https://cdn.shopify.com/s/files/1/0562/6105/0519/files/Untitled_480x480.png?v=1657512323" class="verified-icon"></div>
   </div>
 
   <div class="posts" id="posts-container">
@@ -588,7 +625,7 @@
 const posts = [
   // Biology First Paper Revision Classes
   {
-    date: "25 July 2025",
+    date: `HP Plus`,
     text: `
 🧠 Revision Class: Biology First Paper<br><br>
 
@@ -605,31 +642,9 @@ const posts = [
 ◾️Chapter 11 - জীব প্রযুক্তি: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Chapter 12 - জীবের পরিবেশ, বিস্তার ও সংরক্ষণ: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
     `,
-    image: "revision1.jpg"
+    image: "image/revision1.png"
   },
-  // Biology Second Paper Revision Classes
-  {
-    date: "25 July 2025",
-    text: `
-🧠 Revision Class: Biology Second Paper<br><br>
 
-◾️Chapter 01 - প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস: <a href="https://bio2026.github.io/home/class/?v=n_nw5qAPVMA" target="_self">Click Here</a><br>
-◾️Chapter 02 - প্রাণীর পরিচিতি (হাইড্রা): <a href="https://bio2026.github.io/home/class/?v=DpGakw58QUU" target="_self">Click Here</a><br>
-◾️Chapter 02 - প্রাণীর পরিচিতি (ঘাসফড়িং): <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
-◾️Chapter 02 - প্রাণীর পরিচিতি (রুই মাছ): <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
-◾️Chapter 03 - পরিপাক ও শোষণ: <a href="https://bio2026.github.io/home/class/?v=CKEc-W5SgTQ" target="_self">Click Here</a><br>
-◾️Chapter 04 - রক্ত সঞ্চালন: <a href="https://bio2026.github.io/home/class/?v=AHQyxephMns" target="_self">Click Here</a><br>
-◾️Chapter 05 - শ্বসন ও শ্বাসক্রিয়া: <a href="https://bio2026.github.io/home/class/?v=d230GoJXIH0" target="_self">Click Here</a><br>
-◾️Chapter 06 - বর্জ্য ও নিষ্কাশন: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
-◾️Chapter 07 - চলন ও অঙ্গচালনা: <a href="https://bio2026.github.io/home/class/?v=7eTP4P1nrYg" target="_self">Click Here</a><br>
-◾️Chapter 08 - সমন্বয় ও নিয়ন্ত্রণ: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
-◾️Chapter 09 - মানব জীবনের ধারাবাহিকতা: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
-◾️Chapter 10 - মানবদেহের প্রতিরক্ষা: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
-◾️Chapter 11 - জীনতত্ত্ব ও বিবর্তন: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
-◾️Chapter 12 - প্রাণীর আচরণ: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
-    `,
-    image: "revision2.jpg"
-  },
 
   // Original posts follow below...
   // Biology First Paper
@@ -654,7 +669,7 @@ const posts = [
 ◾️Lecture 14: <a href="https://bio2026.github.io/home/class/?v=CbH1oAOZW80" target="_self">Click Here</a><br>
 ◾️Lecture 15: <a href="https://bio2026.github.io/home/class/?v=sUj4EmsIL74" target="_self">Click Here</a><br><br>
     `,
-    image: "chap1.1.jpg"
+    image: "image/chap1.1.png"
   },
   {
     date: "27 July 2025",
@@ -670,7 +685,7 @@ const posts = [
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=XUCU4sTJ3Gs" target="_self">Click Here</a><br>
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=Dtbr0U_Uu1U" target="_self">Click Here</a><br><br>
     `,
-    image: "chap1.2.jpg"
+    image: "image/chap1.2.png"
   },
   {
     date: "28 July 2025",
@@ -686,7 +701,7 @@ const posts = [
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=XbnuzwiWJHI" target="_self">Click Here</a><br>
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=Dg_GozeH-Sk" target="_self">Click Here</a><br><br>
     `,
-    image: "chap1.3.jpg"
+    image: "image/chap1.3.png"
   },
   {
     date: "29 July 2025",
@@ -703,7 +718,7 @@ const posts = [
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=5_nMvluBXbg" target="_self">Click Here</a><br><br>
 
     `,
-    image: "chap1.4.jpg"
+    image: "image/chap1.4.png"
   },
   {
     date: "30 July 2025",
@@ -717,7 +732,7 @@ const posts = [
 ◾️Lecture 5: <a href="https://bio2026.github.io/home/class/?v=AFFIKsFEAbQ" target="_self">Click Here</a><br>
 ◾️Lecture 6: <a href="https://bio2026.github.io/home/class/?v=S6Xz8uPWNOs" target="_self">Click Here</a><br><br>
     `,
-    image: "chap1.5.jpg"
+    image: "image/chap1.5.png"
   },
   {
     date: "31 July 2025",
@@ -728,7 +743,7 @@ const posts = [
 ◾️Lecture 2: <a href="https://bio2026.github.io/home/class/?v=B8LRsbOQ26U" target="_self">Click Here</a><br>
 ◾️Lecture 3: <a href="https://bio2026.github.io/home/class/?v=TXmxc7XIGx0" target="_self">Click Here</a><br><br>
     `,
-    image: "chap1.6.jpg"
+    image: "image/chap1.6.png"
   },
   {
     date: "1 August 2025",
@@ -743,7 +758,7 @@ const posts = [
 ◾️Lecture 6: <a href="https://bio2026.github.io/home/class/?v=aYbCZati--Q" target="_self">Click Here</a><br>
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=ldHEWOrAQQ8" target="_self">Click Here</a><br><br>
     `,
-    image: "chap1.7.jpg"
+    image: "image/chap1.7.png"
   },
   {
     date: "2 August 2025",
@@ -755,7 +770,7 @@ const posts = [
 ◾️Lecture 3: <a href="https://bio2026.github.io/home/class/?v=4wFBxV8cMb0" target="_self">Click Here</a><br>
 ◾️Lecture 4: <a href="https://bio2026.github.io/home/class/?v=m_nW40Dx-M0" target="_self">Click Here</a><br><br>
     `,
-    image: "chap1.8.jpg"
+    image: "image/chap1.8.png"
   },
   {
     date: "3 August 2025",
@@ -770,7 +785,7 @@ const posts = [
 ◾️Lecture 6: <a href="https://bio2026.github.io/home/class/?v=nhfDd2kMKmk" target="_self">Click Here</a><br>
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=-1OdMx0NOr8" target="_self">Click Here</a><br><br>
     `,
-    image: "chap1.9.jpg"
+    image: "image/chap1.9.png"
   },
   {
     date: "4 August 2025",
@@ -786,7 +801,7 @@ const posts = [
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br><br>
     `,
-    image: "chap1.10.jpg"
+    image: "image/chap1.10.png"
   },
   {
     date: "5 August 2025",
@@ -799,7 +814,7 @@ const posts = [
 ◾️Lecture 4: <a href="https://bio2026.github.io/home/class/?v=6wBZyt0wWlY" target="_self">Click Here</a><br>
 ◾️Lecture 5: <a href="https://bio2026.github.io/home/class/?v=pNJpXfJu2vQ" target="_self">Click Here</a><br><br>
     `,
-    image: "chap1.11.jpg"
+    image: "image/chap1.11.png"
   },
   {
     date: "6 August 2025",
@@ -815,10 +830,35 @@ const posts = [
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br><br>
     `,
-    image: "chap1.12.jpg"
+    image: "image/chap1.12.png"
   },
 
-  // Biology Second Paper
+
+ // Biology Second Paper Revision Classes
+  {
+    date: "25 July 2025",
+    text: `
+🧠 Revision Class: Biology Second Paper<br><br>
+
+◾️Chapter 01 - প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস: <a href="https://bio2026.github.io/home/class/?v=n_nw5qAPVMA" target="_self">Click Here</a><br>
+◾️Chapter 02 - প্রাণীর পরিচিতি (হাইড্রা): <a href="https://bio2026.github.io/home/class/?v=DpGakw58QUU" target="_self">Click Here</a><br>
+◾️Chapter 02 - প্রাণীর পরিচিতি (ঘাসফড়িং): <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
+◾️Chapter 02 - প্রাণীর পরিচিতি (রুই মাছ): <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
+◾️Chapter 03 - পরিপাক ও শোষণ: <a href="https://bio2026.github.io/home/class/?v=CKEc-W5SgTQ" target="_self">Click Here</a><br>
+◾️Chapter 04 - রক্ত সঞ্চালন: <a href="https://bio2026.github.io/home/class/?v=AHQyxephMns" target="_self">Click Here</a><br>
+◾️Chapter 05 - শ্বসন ও শ্বাসক্রিয়া: <a href="https://bio2026.github.io/home/class/?v=d230GoJXIH0" target="_self">Click Here</a><br>
+◾️Chapter 06 - বর্জ্য ও নিষ্কাশন: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
+◾️Chapter 07 - চলন ও অঙ্গচালনা: <a href="https://bio2026.github.io/home/class/?v=7eTP4P1nrYg" target="_self">Click Here</a><br>
+◾️Chapter 08 - সমন্বয় ও নিয়ন্ত্রণ: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
+◾️Chapter 09 - মানব জীবনের ধারাবাহিকতা: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
+◾️Chapter 10 - মানবদেহের প্রতিরক্ষা: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
+◾️Chapter 11 - জীনতত্ত্ব ও বিবর্তন: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
+◾️Chapter 12 - প্রাণীর আচরণ: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
+    `,
+    image: "image/revision2.png"
+  },
+ 
+ // Biology Second Paper
   {
     date: "7 August 2025",
     text: `
@@ -834,7 +874,7 @@ const posts = [
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=37_djq1MzoY" target="_self">Click Here</a><br>
 ◾️Lecture 9: <a href="https://bio2026.github.io/home/class/?v=p67_3luIi7s" target="_self">Click Here</a><br><br>
     `,
-    image: "chap2.1.jpg"
+    image: "image/chap2.1.png"
   },
   {
     date: "8 August 2025",
@@ -850,11 +890,11 @@ const posts = [
 ◾️Lecture 7 (ঘাসফড়িং): <a href="https://bio2026.github.io/home/class/?v=2P3Jb6EBGfc" target="_self">Click Here</a><br>
 ◾️Lecture 8 (ঘাসফড়িং): <a href="https://bio2026.github.io/home/class/?v=-zVaAW0nl-s" target="_self">Click Here</a><br>
 ◾️Lecture 9 (ঘাসফড়িং): <a href="https://bio2026.github.io/home/class/?v=s_4ln7zJL8I" target="_self">Click Here</a><br>
-◾️Lecture 10 (রুই মাছ): <a href="https://bio2026.github.io/home/class/?v=cFpPJPgqUOY" target="_self">Click Here</a><br>
+◾️Lecture 10 (রুই মাছ): <a href="https://bio2026.github.io/home/class/?v=cFpPpngqUOY" target="_self">Click Here</a><br>
 ◾️Lecture 11 (রুই মাছ): <a href="https://bio2026.github.io/home/class/?v=vuF9SiNGBYQ" target="_self">Click Here</a><br>
 ◾️Lecture 12 (রুই মাছ): <a href="https://bio2026.github.io/home/class/?v=cG8WxgagEPI" target="_self">Click Here</a><br><br>
     `,
-    image: "chap2.2.jpg"
+    image: "image/chap2.2.png"
   },
   {
     date: "9 August 2025",
@@ -872,7 +912,7 @@ const posts = [
 ◾️Lecture 9: <a href="https://bio2026.github.io/home/class/?v=k96RHeVPJPE" target="_self">Click Here</a><br>
 ◾️Lecture 10: <a href="https://bio2026.github.io/home/class/?v=vceO6zUUbfA" target="_self">Click Here</a><br><br>
     `,
-    image: "chap2.3.jpg"
+    image: "image/chap2.3.png"
   },
   {
     date: "10 August 2025",
@@ -891,7 +931,7 @@ const posts = [
 ◾️Lecture 10: <a href="https://bio2026.github.io/home/class/?v=l0ZvPm-cdlM" target="_self">Click Here</a><br>
 ◾️Lecture 11: <a href="https://bio2026.github.io/home/class/?v=IO3rvxtcwko" target="_self">Click Here</a><br><br>
     `,
-    image: "chap2.4.jpg"
+    image: "image/chap2.4.png"
   },
   {
     date: "11 August 2025",
@@ -903,7 +943,7 @@ const posts = [
 ◾️Lecture 3: <a href="https://bio2026.github.io/home/class/?v=zHEASKxdB0E" target="_self">Click Here</a><br>
 ◾️Lecture 4: <a href="https://bio2026.github.io/home/class/?v=uQ2ZGIJhzWM" target="_self">Click Here</a><br><br>
     `,
-    image: "chap2.5.jpg"
+    image: "image/chap2.5.png"
   },
   {
     date: "12 August 2025",
@@ -916,7 +956,7 @@ const posts = [
 ◾️Lecture 4: <a href="https://bio2026.github.io/home/class/?v=i0IQzphqkgk" target="_self">Click Here</a><br>
 ◾️Lecture 5: <a href="https://bio2026.github.io/home/class/?v=cZEFAirr0PU" target="_self">Click Here</a><br><br>
     `,
-    image: "chap2.6.jpg"
+    image: "image/chap2.6.png"
   },
   {
     date: "13 August 2025",
@@ -932,23 +972,23 @@ const posts = [
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br><br>
     `,
-    image: "chap2.7.jpg"
+    image: "image/chap2.7.png"
   },
   {
     date: "14 August 2025",
     text: `
 🔹অধ্যায় ০৮ - সমন্বয় ও নিয়ন্ত্রণ<br><br>
 
-◾️Lecture 1: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
-◾️Lecture 2: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
-◾️Lecture 3: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
+◾️Lecture 1: <a href="https://bio2026.github.io/home/class/?v=D3sjB3mDZaw" target="_self">Click Here</a><br>
+◾️Lecture 2: <a href="https://bio2026.github.io/home/class/?v=y-fFKjKlGVc" target="_self">Click Here</a><br>
+◾️Lecture 3: <a href="https://bio2026.github.io/home/class/?v=y3yMn6YxYkM" target="_self">Click Here</a><br>
 ◾️Lecture 4: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Lecture 5: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Lecture 6: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br><br>
     `,
-    image: "chap2.8.jpg"
+    image: "image/chap2.8.png"
   },
   {
     date: "15 August 2025",
@@ -964,7 +1004,7 @@ const posts = [
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br><br>
     `,
-    image: "chap2.9.jpg"
+    image: "image/chap2.9.png"
   },
   {
     date: "16 August 2025",
@@ -980,7 +1020,7 @@ const posts = [
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br><br>
     `,
-    image: "chap2.10.jpg"
+    image: "image/chap2.10.png"
   },
   {
     date: "17 August 2025",
@@ -996,7 +1036,7 @@ const posts = [
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br><br>
     `,
-    image: "chap2.11.jpg"
+    image: "image/chap2.11.png"
   },
   {
     date: "18 August 2025",
@@ -1012,7 +1052,7 @@ const posts = [
 ◾️Lecture 7: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br>
 ◾️Lecture 8: <a href="https://bio2026.github.io/home/class/?v=example" target="_self">Coming Soon</a><br><br>
     `,
-    image: "chap2.12.jpg"
+    image: "image/chap2.12.png"
   }
 ];
 
@@ -1072,6 +1112,36 @@ const posts = [
         e.preventDefault();
       }
     });
+// Function to hide Coming Soon lectures
+function hideComingSoonLectures() {
+  // Get all posts
+  const posts = document.querySelectorAll('.post');
+  
+  posts.forEach(post => {
+    // Get the post text content
+    const postText = post.querySelector('.post-text');
+    if (!postText) return;
+    
+    // Split the content by <br> tags
+    const lines = postText.innerHTML.split('<br>');
+    
+    // Filter out lines containing "Coming Soon"
+    const filteredLines = lines.filter(line => {
+      return !line.includes('Coming Soon</a>');
+    });
+    
+    // Join the remaining lines back together
+    postText.innerHTML = filteredLines.join('<br>');
+  });
+}
+
+// Call this function after DOM is loaded
+window.addEventListener('DOMContentLoaded', () => {
+  // ... your existing DOMContentLoaded code ...
+  
+  // Add this line at the end
+  hideComingSoonLectures();
+});
   </script>
 </body>
 </html>
