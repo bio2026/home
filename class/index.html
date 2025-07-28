@@ -1031,6 +1031,97 @@ header {
     padding-top: 25px;
   }
 } 
+/* Leaderboard Styles */
+.leaderboard-card {
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 25px;
+}
+
+.leaderboard-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.leaderboard-list {
+  margin-top: 15px;
+}
+
+.leaderboard-entry {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  background: rgba(40, 40, 40, 0.8);
+  border-radius: 10px;
+  border-left: 4px solid #3da6ff;
+}
+
+.leaderboard-rank {
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 30px;
+  text-align: center;
+  margin-right: 15px;
+}
+
+.leaderboard-rank.rank-1 {
+  color: gold;
+}
+
+.leaderboard-rank.rank-2 {
+  color: silver;
+}
+
+.leaderboard-rank.rank-3 {
+  color: #cd7f32; /* bronze */
+}
+
+.leaderboard-details {
+  flex-grow: 1;
+}
+
+.leaderboard-name {
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.leaderboard-progress {
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar-small {
+  height: 8px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 4px;
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.progress-fill-small {
+  height: 100%;
+  background: linear-gradient(90deg, #00c853, #009624);
+  border-radius: 4px;
+}
+
+.leaderboard-percentage {
+  font-size: 0.9rem;
+  width: 50px;
+  text-align: right;
+}
+
+.loading {
+  text-align: center;
+  color: #bbb;
+  padding: 20px;
+}
 </style>
 </head>
 <body>
@@ -1170,12 +1261,19 @@ header {
         </div>
       </div>
     </div>
+<!-- Leaderboard Section -->
+<div class="leaderboard-card">
+  <h3>🏆 Progress Leadership</h3>
+  <div class="leaderboard-list" id="leaderboard-list">
+    <!-- Leaderboard entries will be populated here -->
+    <div class="loading">Loading leaderboard...</div>
+  </div>
+</div>
     
   </div>
 
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-  <script>
-// Sample lecture data
+<script>
 const lectures = {
   "Biology First Paper": {
     "Chapter 1: কোষ ও এর গঠন": {
@@ -1443,12 +1541,14 @@ const lectures = {
   }
 };
 
+// Google Apps Script Web App URL - REPLACE WITH YOUR ACTUAL URL
+const LEADERBOARD_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+
 // Function to get the video ID from the URL
 function getVideoId() {
   const urlParams = new URLSearchParams(window.location.search);
   const videoId = urlParams.get('v');
   
-  // Validate the video ID (basic check for YouTube ID format)
   if (!videoId || !/^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
     return null;
   }
@@ -1458,11 +1558,9 @@ function getVideoId() {
 
 // Initialize player when we have a valid video ID
 function initializePlayer(videoId) {
-  // Update the player element with the video ID
   const playerElement = document.getElementById('player');
   playerElement.setAttribute('data-plyr-embed-id', videoId);
   
-  // Initialize Plyr player
   const player = new Plyr('#player', {
     controls: [
       'play-large',
@@ -1488,7 +1586,6 @@ function initializePlayer(videoId) {
     }
   });
 
-  // Ensure YouTube controls stay hidden
   const hideYouTubeUI = () => {
     const iframe = document.querySelector('.plyr__video-embed iframe');
     if (iframe) {
@@ -1497,11 +1594,9 @@ function initializePlayer(videoId) {
     }
   };
   
-  // Run immediately and periodically
   hideYouTubeUI();
   setInterval(hideYouTubeUI, 1000);
   
-  // YouTube keyboard controls
   document.addEventListener('keydown', (e) => {
     if (document.activeElement.tagName === 'INPUT') return;
     
@@ -1524,14 +1619,12 @@ function initializePlayer(videoId) {
       e.preventDefault();
     }
     
-    // Number keys 1-9 (10-90%)
     if (e.key >= 1 && e.key <= 9) {
       player.currentTime = player.duration * (e.key / 10);
       e.preventDefault();
     }
   });
   
-  // Mobile double-tap to play/pause
   let lastTap = 0;
   document.querySelector('.video-wrapper').addEventListener('click', (e) => {
     const now = Date.now();
@@ -1565,7 +1658,7 @@ function findLectureByVideoId(videoId) {
 
 // Create lecture card (only if video ID is valid)
 function createLectureCard(subject, chapter, classNum, title, videoId) {
-  if (!videoId) return null; // Skip if video ID is null
+  if (!videoId) return null;
   
   const card = document.createElement('div');
   card.className = 'lecture-card';
@@ -1611,7 +1704,6 @@ function getAllLecturesExceptCurrent(currentVideoId) {
     }
   }
   
-  // Shuffle array
   for (let i = allLectures.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [allLectures[i], allLectures[j]] = [allLectures[j], allLectures[i]];
@@ -1634,48 +1726,52 @@ function setupAccessControl() {
     document.getElementById('digit5')
   ];
   
-  // Check if access has already been granted
   if (localStorage.getItem('bioMissionAccessGranted') === 'true') {
     accessModal.style.display = 'none';
     return;
   }
   
-  // Generate access code based on current date
   function generateAccessCode() {
     const now = new Date();
-    const day = now.getDate(); // 1-31
-    const month = now.getMonth() + 1; // 1-12
-    const year = now.getFullYear() % 100; // Last two digits
-    
+    const day = now.getDate();
+    const month = now.getMonth() + 1;
+    const year = now.getFullYear() % 100;
     return `${day}${month}${year}`;
   }
   
-  // Validate the entered code
-  function validateAccessCode() {
-    const enteredCode = digitInputs.map(input => input.value).join('');
-    const validCode = generateAccessCode();
-    
-    return enteredCode === validCode;
+  function validateAccessCode(enteredCode) {
+    return enteredCode === generateAccessCode();
   }
   
-  // Handle code submission
-  submitBtn.addEventListener('click', () => {
-    if (validateAccessCode()) {
+  submitBtn.addEventListener('click', async () => {
+    const enteredCode = digitInputs.map(input => input.value).join('');
+    
+    if (validateAccessCode(enteredCode)) {
+      const name = prompt("Please enter your name for the leaderboard:");
+      if (!name) return;
+      
+      const email = prompt("Please enter your email:");
+      if (!email) return;
+
+      localStorage.setItem('userInfo', JSON.stringify({ name, email }));
       localStorage.setItem('bioMissionAccessGranted', 'true');
       accessModal.style.display = 'none';
+      
+      // Initial leaderboard update
+      const progress = calculateProgress().percentage;
+      await updateLeaderboard(name, email, progress);
+      fetchLeaderboard();
     } else {
       errorContainer.style.display = 'block';
     }
   });
   
-  // Handle retry button
   retryBtn.addEventListener('click', () => {
     errorContainer.style.display = 'none';
     digitInputs.forEach(input => input.value = '');
     digitInputs[0].focus();
   });
   
-  // Input navigation
   digitInputs.forEach((input, index) => {
     input.addEventListener('input', () => {
       if (input.value.length === 1 && index < digitInputs.length - 1) {
@@ -1690,7 +1786,6 @@ function setupAccessControl() {
     });
   });
   
-  // Focus first input
   digitInputs[0].focus();
 }
 
@@ -1706,7 +1801,6 @@ function saveCompletedLectures(completed) {
 function markLectureCompleted(lectureInfo) {
   const completed = getCompletedLectures();
   
-  // Check if already completed
   const alreadyCompleted = completed.some(item => 
     item.subject === lectureInfo.subject && 
     item.chapter === lectureInfo.chapter && 
@@ -1721,8 +1815,6 @@ function markLectureCompleted(lectureInfo) {
     
     completed.push(completionData);
     saveCompletedLectures(completed);
-    
-    // Update UI
     updateProgressUI();
     return true;
   }
@@ -1733,7 +1825,6 @@ function markLectureCompleted(lectureInfo) {
 function calculateProgress() {
   const completed = getCompletedLectures();
   
-  // Count total lectures (only those with valid video IDs)
   let totalLectures = 0;
   for (const subject in lectures) {
     for (const chapter in lectures[subject]) {
@@ -1758,15 +1849,13 @@ function updateProgressUI() {
   const progressText = document.getElementById('progress-text');
   const completedList = document.getElementById('completed-list');
   
-  // Update progress bar
   progressFill.style.width = `${progress.percentage}%`;
   progressText.textContent = `${progress.percentage}% Complete (${progress.completed} of ${progress.total} classes)`;
   
-  // Update completed list
   completedList.innerHTML = '';
   
   const completedLectures = getCompletedLectures();
-  completedLectures.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by most recent
+  completedLectures.sort((a, b) => new Date(b.date) - new Date(a.date));
   
   completedLectures.forEach(lecture => {
     const dateObj = new Date(lecture.date);
@@ -1785,9 +1874,59 @@ function updateProgressUI() {
   });
 }
 
+// Leaderboard functions
+async function updateLeaderboard(name, email, progress) {
+  try {
+    const response = await fetch(LEADERBOARD_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({ name, email, progress }),
+      headers: { "Content-Type": "application/json" }
+    });
+    return await response.text();
+  } catch (error) {
+    console.error("Leaderboard update failed:", error);
+    return false;
+  }
+}
+
+async function fetchLeaderboard() {
+  try {
+    const response = await fetch(`${LEADERBOARD_SCRIPT_URL}?action=getLeaderboard`);
+    const data = await response.json();
+    displayLeaderboard(data);
+  } catch (error) {
+    console.error("Failed to load leaderboard:", error);
+    document.getElementById('leaderboard-list').innerHTML = 
+      '<div class="error">Leaderboard unavailable. Try refreshing.</div>';
+  }
+}
+
+function displayLeaderboard(users) {
+  const container = document.getElementById('leaderboard-list');
+  if (!users || users.length === 0) {
+    container.innerHTML = '<div class="empty">No data available yet</div>';
+    return;
+  }
+
+  const sorted = users.sort((a, b) => b.progress - a.progress).slice(0, 5);
+  container.innerHTML = sorted.map((user, i) => `
+    <div class="leaderboard-entry">
+      <div class="leaderboard-rank rank-${i+1}">${i+1}</div>
+      <div class="leaderboard-details">
+        <div class="leaderboard-name">${user.name}</div>
+        <div class="leaderboard-progress">
+          <div class="progress-bar-small">
+            <div class="progress-fill-small" style="width: ${user.progress}%"></div>
+          </div>
+          <div class="leaderboard-percentage">${user.progress}%</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
 // Initialize the page
 function initPage() {
-  // Set up access control first
   setupAccessControl();
   
   const videoId = getVideoId();
@@ -1797,20 +1936,16 @@ function initPage() {
     return;
   }
   
-  // Find lecture info
   const lectureInfo = findLectureByVideoId(videoId);
   
   if (lectureInfo) {
-    // Update page title and subtitle
     document.getElementById('lecture-title').textContent = lectureInfo.title;
     document.getElementById('lecture-subtitle').textContent = 
       `Class ${lectureInfo.classNum} | ${lectureInfo.chapter} | ${lectureInfo.subject}`;
   }
   
-  // Initialize player
   initializePlayer(videoId);
   
-  // Set up read more functionality
   const description = document.getElementById('lecture-description');
   const readMore = document.getElementById('read-more');
   
@@ -1819,7 +1954,6 @@ function initPage() {
     readMore.textContent = description.classList.contains('expanded') ? 'Read less' : 'Read more...';
   });
   
-  // Populate related lectures (skip null videos)
   if (lectureInfo) {
     const relatedLecturesContainer = document.getElementById('related-lectures');
     const chapterLectures = lectures[lectureInfo.subject][lectureInfo.chapter];
@@ -1827,7 +1961,7 @@ function initPage() {
     for (const classNum in chapterLectures) {
       if (parseInt(classNum) !== lectureInfo.classNum) {
         const lecture = chapterLectures[classNum];
-        if (lecture.id) { // Only add if video ID exists
+        if (lecture.id) {
           const card = createLectureCard(
             lectureInfo.subject,
             lectureInfo.chapter,
@@ -1843,11 +1977,8 @@ function initPage() {
     }
   }
   
-  // Populate more lectures (skip null videos)
   const moreLecturesContainer = document.getElementById('more-lectures');
   const allLectures = getAllLecturesExceptCurrent(videoId);
-  
-  // Take only 4 random lectures initially
   const initialLectures = allLectures.slice(0, 4);
   
   initialLectures.forEach(lecture => {
@@ -1863,7 +1994,6 @@ function initPage() {
     }
   });
   
-  // Set up "Load More" button
   const moreBtn = document.getElementById('more-btn');
   let displayedCount = 4;
   
@@ -1890,7 +2020,6 @@ function initPage() {
     }
   });
   
-  // Set up mark as complete functionality
   const markCompleteBtn = document.getElementById('mark-complete-btn');
   const confirmModal = document.getElementById('confirmation-modal');
   const confirmYesBtn = document.getElementById('confirm-yes');
@@ -1900,9 +2029,20 @@ function initPage() {
     confirmModal.style.display = 'flex';
   });
   
-  confirmYesBtn.addEventListener('click', () => {
+  confirmYesBtn.addEventListener('click', async () => {
     if (lectureInfo) {
-      markLectureCompleted(lectureInfo);
+      const marked = markLectureCompleted(lectureInfo);
+      if (marked) {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+        if (userInfo.name && userInfo.email) {
+          await updateLeaderboard(
+            userInfo.name, 
+            userInfo.email, 
+            calculateProgress().percentage
+          );
+          fetchLeaderboard();
+        }
+      }
     }
     confirmModal.style.display = 'none';
   });
@@ -1911,7 +2051,6 @@ function initPage() {
     confirmModal.style.display = 'none';
   });
   
-  // Close modals when clicking outside
   [confirmModal].forEach(modal => {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
@@ -1920,8 +2059,13 @@ function initPage() {
     });
   });
   
-  // Initialize progress UI
   updateProgressUI();
+  
+  // Initialize leaderboard if access granted
+  if (localStorage.getItem('bioMissionAccessGranted') === 'true') {
+    fetchLeaderboard();
+    setInterval(fetchLeaderboard, 5 * 60 * 1000);
+  }
 }
 
 // Initialize when page loads
@@ -1931,30 +2075,23 @@ document.addEventListener('DOMContentLoaded', initPage);
 document.addEventListener('DOMContentLoaded', () => {
   const logo = document.querySelector('.circular-logo');
   if (logo) {
-    // Add loaded class after short delay
     setTimeout(() => {
       logo.classList.add('loaded');
       
-      // Remove animation after 3 pulses
       setTimeout(() => {
         logo.classList.remove('loaded');
       }, 6000);
     }, 500);
   }
 });
-  </script>
-<script>
-// Detect and block search crawlers
+
+// Security and anti-crawler measures
 const crawlers = [
   'googlebot', 'bingbot', 'slurp', 'duckduckbot',
   'baiduspider', 'yandexbot', 'sogou', 'exabot'
 ];
 
-const isCrawler = crawlers.some(bot => 
-  navigator.userAgent.toLowerCase().includes(bot)
-);
-
-if(isCrawler) {
+if (crawlers.some(bot => navigator.userAgent.toLowerCase().includes(bot))) {
   document.body.innerHTML = `
     <div style="text-align:center;padding:50px;">
       <img src="https://cdn3d.iconscout.com/3d/premium/thumb/block-message-5309088-4440424.png" 
@@ -1965,47 +2102,28 @@ if(isCrawler) {
   `;
   throw new Error("Search crawler blocked");
 }
-</script>
-<script>
-// Block right-click menu
-document.addEventListener('contextmenu', function(e) {
-  e.preventDefault();
-});
 
-// Block common copy shortcuts
-document.addEventListener('keydown', function(e) {
-  // Ctrl+C, Ctrl+X, Ctrl+A
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+document.addEventListener('keydown', (e) => {
   if (e.ctrlKey && (e.key === 'c' || e.key === 'x' || e.key === 'a')) {
     e.preventDefault();
   }
-  
-  // Ctrl+Insert (Copy), Shift+Insert (Paste), Shift+Delete (Cut)
   if ((e.ctrlKey || e.shiftKey) && (e.key === 'Insert' || e.key === 'Delete')) {
     e.preventDefault();
   }
 });
-
-// Extra protection for mobile long-press
-document.addEventListener('selectstart', function(e) {
-  e.preventDefault();
-});
-// Block zooming through various methods
-document.addEventListener('wheel', function(e) {
-  if (e.ctrlKey) {
-    e.preventDefault();
-  }
+document.addEventListener('selectstart', (e) => e.preventDefault());
+document.addEventListener('wheel', (e) => {
+  if (e.ctrlKey) e.preventDefault();
 }, { passive: false });
-
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', (e) => {
   if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '0')) {
     e.preventDefault();
   }
 });
 
-
-// Disable double-tap zoom on mobile
 let lastTouchEnd = 0;
-document.addEventListener('touchend', function(event) {
+document.addEventListener('touchend', (event) => {
   const now = (new Date()).getTime();
   if (now - lastTouchEnd <= 300) {
     event.preventDefault();
