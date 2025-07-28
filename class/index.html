@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1541,7 +1542,7 @@ const lectures = {
 };
 
 
-// Google Apps Script Web App URL - REPLACE WITH YOUR ACTUAL URL
+// Google Apps Script Web App URL
 const LEADERBOARD_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzCe_DB1mvXZxqUw8QZZdDNKsiwQDj5bwfRUWfpxQ-rENQ6aRc1Sg-vh5btAmjfwe9q/exec";
 
 // Function to get the video ID from the URL
@@ -1928,6 +1929,8 @@ function displayLeaderboard(users) {
 // Initialize the page
 function initPage() {
   setupAccessControl();
+
+
   
   const videoId = getVideoId();
   
@@ -2130,6 +2133,7 @@ document.addEventListener('touchend', (event) => {
   }
   lastTouchEnd = now;
 }, false);
+
 </script>
 </body>
 </html>
