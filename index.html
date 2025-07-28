@@ -570,29 +570,30 @@
 
     // Loading screen functionality
     function showLoadingScreen(imgSrc, text, targetUrl) {
-      const loadingScreen = document.getElementById('loading-screen');
-      const loadingImage = document.getElementById('loading-image');
-      const loadingText = document.getElementById('loading-text');
-      const loadingBar = document.getElementById('loading-bar');
-      
-      loadingBar.style.width = '0%';
-      loadingImage.src = imgSrc || '';
-      loadingText.textContent = text;
-      loadingScreen.style.display = 'flex';
-      
-      let width = 0;
-      const interval = setInterval(() => {
-        width++;
-        loadingBar.style.width = width + '%';
-        
-        if (width >= 100) {
-          clearInterval(interval);
-          setTimeout(() => {
-            window.location.href = targetUrl;
-          }, 100);
-        }
-      }, 30);
+  const loadingScreen = document.getElementById('loading-screen');
+  const loadingImage = document.getElementById('loading-image');
+  const loadingText = document.getElementById('loading-text');
+  const loadingBar = document.getElementById('loading-bar');
+  
+  // Reset loading bar & show screen
+  loadingBar.style.width = '0%';
+  loadingImage.src = imgSrc || '';
+  loadingText.textContent = text;
+  loadingScreen.style.display = 'flex';
+  
+  let width = 0;
+  const interval = setInterval(() => {
+    width++;
+    loadingBar.style.width = width + '%';
+    
+    if (width >= 100) {
+      clearInterval(interval);
+      // Hide loading screen right before redirect
+      loadingScreen.style.display = 'none';
+      window.location.href = targetUrl;
     }
+  }, 30);
+}
 
     // Handle link clicks
     function handleLinkClick(e) {
@@ -1057,38 +1058,46 @@ const posts = [
   }
 ];
 
+    
+// Initialize the page
     // Initialize the page
-    window.addEventListener('DOMContentLoaded', () => {
-      const user = localStorage.getItem('hp_user');
-      if (user) {
-        document.getElementById('login-overlay').style.display = 'none';
-        document.body.style.overflow = 'auto';
-      }
-      
-      // Add click event listener for links
-      document.addEventListener('click', handleLinkClick);
-      
-      // Mark coming soon links
-      document.querySelectorAll('a').forEach(link => {
-        if (link.textContent.toLowerCase().includes('coming soon')) {
-          link.classList.add('coming-soon');
-          link.href = 'javascript:void(0)';
-        }
-      });
+window.addEventListener('DOMContentLoaded', () => {
+  // Hide loading screen when page loads (NEW)
+  document.getElementById('loading-screen').style.display = 'none';
 
-      // Render posts
-      const container = document.getElementById("posts-container");
-      posts.forEach(post => {
-        const div = document.createElement("div");
-        div.className = "post";
-        div.innerHTML = `
-          <div class="post-date">${post.date}</div>
-          <div class="post-text">${post.text}</div>
-          ${post.image ? `<img src="${post.image}" alt="Post Image">` : ""}
-        `;
-        container.appendChild(div);
-      });
-    });
+  const user = localStorage.getItem('hp_user');
+  if (user) {
+    document.getElementById('login-overlay').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+  
+  // Add click event listener for links
+  document.addEventListener('click', handleLinkClick);
+  
+  // Mark coming soon links
+  document.querySelectorAll('a').forEach(link => {
+    if (link.textContent.toLowerCase().includes('coming soon')) {
+      link.classList.add('coming-soon');
+      link.href = 'javascript:void(0)';
+    }
+  });
+
+  // Render posts
+  const container = document.getElementById("posts-container");
+  posts.forEach(post => {
+    const div = document.createElement("div");
+    div.className = "post";
+    div.innerHTML = `
+      <div class="post-date">${post.date}</div>
+      <div class="post-text">${post.text}</div>
+      ${post.image ? `<img src="${post.image}" alt="Post Image">` : ""}
+    `;
+    container.appendChild(div);
+  });
+
+  // Hide Coming Soon lectures (if you're keeping this feature)
+  hideComingSoonLectures();
+});
 
     // Block right-click and copy
     document.addEventListener('contextmenu', function(e) {
