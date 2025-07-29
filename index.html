@@ -1,332 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biology Lecture Video ID Updater</title>
-    <style>
-        :root {
-            --primary: #4a6fa5;
-            --secondary: #166088;
-            --accent: #1b9aaa;
-            --light: #f5f7fa;
-            --dark: #2c3e50;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f0f4f8;
-            color: var(--dark);
-            line-height: 1.6;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        h1, h2, h3 {
-            margin-bottom: 15px;
-        }
-        
-        .tabs {
-            display: flex;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 25px;
-        }
-        
-        .tab {
-            flex: 1;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            background: #e9ecef;
-            transition: all 0.3s ease;
-        }
-        
-        .tab.active {
-            background: white;
-            font-weight: bold;
-            border-bottom: 3px solid var(--accent);
-        }
-        
-        .tab:hover:not(.active) {
-            background: #dde5eb;
-        }
-        
-        .tab-content {
-            display: none;
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        select, input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            background: white;
-            transition: border 0.3s;
-        }
-        
-        select:focus, input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(27, 154, 170, 0.2);
-        }
-        
-        button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        button:hover {
-            background: #158a99;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-block {
-            display: block;
-            width: 100%;
-            margin: 15px 0;
-        }
-        
-        .btn-secondary {
-            background: var(--secondary);
-        }
-        
-        .btn-secondary:hover {
-            background: #125b7a;
-        }
-        
-        .btn-success {
-            background: var(--success);
-        }
-        
-        .btn-success:hover {
-            background: #27ae60;
-        }
-        
-        .btn-warning {
-            background: var(--warning);
-        }
-        
-        .btn-warning:hover {
-            background: #e67e22;
-        }
-        
-        .preview-box {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 20px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        
-        textarea {
-            width: 100%;
-            min-height: 300px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 14px;
-            background: #f8f9fa;
-            resize: vertical;
-        }
-        
-        .output-area {
-            position: relative;
-        }
-        
-        .copy-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 8px 15px;
-            font-size: 14px;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            background: var(--success);
-            color: white;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .flex-row {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .flex-row > * {
-            flex: 1;
-        }
-        
-        .instructions {
-            background: #e3f2fd;
-            border-left: 4px solid var(--accent);
-            padding: 15px;
-            border-radius: 0 6px 6px 0;
-            margin-bottom: 25px;
-        }
-        
-        .instructions ul {
-            padding-left: 20px;
-            margin: 10px 0;
-        }
-        
-        .instructions li {
-            margin-bottom: 8px;
-        }
-        
-        @media (max-width: 768px) {
-            .flex-row {
-                flex-direction: column;
-            }
-        }
-    </style>
+  <!-- Block search engines -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimum-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="googlebot" content="noindex">
+  <meta name="bingbot" content="noindex">
+
+  <!-- Block archive.org -->
+  <meta name="archive" content="none">
+  <title>HP Plus</title>
+  <link rel="icon" href="logo.jpg" type="image/jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Copy Protection */
+    body {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    input, textarea, [contenteditable] {
+      -webkit-user-select: text !important;
+      -moz-user-select: text !important;
+      -ms-user-select: text !important;
+      user-select: text !important;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a2a6c, #0f0f0f);
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      line-height: 1.6;
+      overflow-x: hidden;
+      font-size: 16px;
+    }
+
+    /* Coming Soon Styling */
+    .coming-soon {
+      color: #888 !important;
+      cursor: not-allowed;
+      pointer-events: none;
+      text-decoration: none !important;
+    }
+    
+    .coming-soon:hover {
+      color: #888 !important;
+    }
+
+    /* Image Modal Styles */
+    .image-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .image-modal-content {
+      max-width: 90%;
+      max-height: 90%;
+    }
+    
+    .image-modal-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .close-modal:hover {
+      color: #3da6ff;
+    }
+
+    /* Loading Screen Styles */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    
+    .loading-content {
+      text-align: center;
+      max-width: 90%;
+    }
+    
+    .loading-content img {
+      max-width: 100%;
+      max-height: 60vh;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .loading-text {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    
+    .loading-bar-container {
+      width: 80%;
+      max-width: 400px;
+      height: 10px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+    
+    .loading-bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #3da6ff, #ff8a00);
+      border-radius: 10px;
+      transition: width 0.1s linear;
+    }
+
+    /* Login Modal Styles */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      display: none; /* Initially hidden */
+    }
+
+    .login-box {
+      background: linear-gradient(135deg, #1a2a6c, #0f0f0f);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(61, 166, 255, 0.3);
+    }
+
+    .login-box h3 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid #3da6ff;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .login-box input:focus {
+      border-color: #ff8a00;
+      box-shadow: 0 0 15px rgba(255, 138, 0, 0.5);
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 20px;
+      background: linear-gradient(135deg, #3da6ff, #2b8ad6);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 20px rgba(45, 138, 214, 0.4);
+    }
+
+    .login-box button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(45, 138, 214, 0.6);
+    }
+
+    /* Header Styles */
+    .channel-header {
+      background: linear-gradient(135deg, rgba(26, 42, 108, 0.9), rgba(15, 15, 15, 0.9));
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: none; /* Initially hidden */
+    }
+
+    .channel-header video {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 15px;
+      object-fit: cover;
+      border: 2px solid #3da6ff;
+    }
+
+    .channel-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .verified-icon {
+      width: 18px;
+      height: 18px;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+
+    /* Posts Container */
+    .posts {
+      max-width: 800px;
+      margin: 100px auto 0;
+      padding: 20px;
+      display: none; /* Initially hidden */
+    }
+
+    .post {
+      background: rgba(30, 30, 30, 0.8);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .post-text {
+      font-family: 'Hind Siliguri', sans-serif;
+      color: #eee;
+      line-height: 1.7;
+      font-size: 1.1rem;
+    }
+
+    .post-date {
+      font-size: 1rem;
+      color: #88cc88;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    
+    .post-date img.verified-icon {
+      width: 14px;
+      height: 14px;
+      margin-left: 4px;
+      vertical-align: middle;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+    }
+    
+    .post img {
+      margin-top: 15px;
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .post img:hover {
+      transform: scale(1.02);
+    }
+
+    a {
+      color: #88ff88;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 2px 5px;
+      border-radius: 4px;
+      display: inline-block;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    a:hover {
+      color: #3da6ff;
+      text-decoration: underline;
+      background: rgba(61, 166, 255, 0.1);
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      body {
+        font-size: 18px;
+      }
+      
+      .posts {
+        padding: 15px;
+        margin-top: 80px;
+      }
+      
+      .post {
+        padding: 15px;
+      }
+      
+      .channel-header {
+        padding: 15px;
+      }
+      
+      .channel-header video {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .channel-name {
+        font-size: 1.1rem;
+      }
+      
+      .post-text {
+        font-size: 1.2rem;
+      }
+      
+      a {
+        min-width: 100px;
+        padding: 5px 8px;
+        margin: 3px 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        font-size: 16px;
+      }
+      
+      .posts {
+        padding: 10px;
+      }
+      
+      .post {
+        padding: 12px;
+      }
+      
+      .login-box {
+        padding: 20px 15px;
+      }
+      
+      .login-box h3 {
+        font-size: 1.5rem;
+      }
+      
+      .post-text {
+        font-size: 1.1rem;
+      }
+      
+      a {
+        min-width: 90px;
+        padding: 4px 6px;
+      }
+    }
+
+    /* Notification for Coming Soon */
+    .coming-soon-notification {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.9);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #3da6ff;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+      z-index: 3000;
+      display: none;
+      max-width: 90%;
+      text-align: center;
+    }
+    
+    .coming-soon-notification p {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 15px;
+    }
+    
+    .coming-soon-notification button {
+      background: #3da6ff;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #3da6ff;
+      font-weight: 600;
+    }
+
+    .verified-icon {
+      width: 14px;
+      height: 14px;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+    }
+
+    /* Keep your existing post-date styling but update the color */
+    .post-date {
+      font-size: 1rem;
+      color: #3da6ff; /* Changed from #88cc88 to match verified badge */
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Biology Lecture Video ID Updater</h1>
-            <p>Easily update video IDs in your lecture code</p>
-        </header>
-        
-        <div class="instructions">
-            <h3>How to use this tool:</h3>
-            <ul>
-                <li><strong>Add/Update Lectures:</strong> Select a chapter and lecture, then enter the YouTube video ID</li>
-                <li><strong>Edit Full Code:</strong> Modify the entire code directly in the editor</li>
-                <li><strong>Proceed:</strong> Generate the updated code after making changes</li>
-                <li><strong>Copy:</strong> Copy the final code to your clipboard</li>
-            </ul>
-        </div>
-        
-        <div class="tabs">
-            <div class="tab active" data-tab="add">Add/Update Lectures</div>
-            <div class="tab" data-tab="edit">Edit Full Code</div>
-            <div class="tab" data-tab="proceed">Proceed & Copy</div>
-        </div>
-        
-        <div class="tab-content active" id="add-content">
-            <h2>Update Lecture Video IDs</h2>
-            <div class="form-group">
-                <label for="paperSelect">Select Paper:</label>
-                <select id="paperSelect">
-                    <option value="first">Biology First Paper</option>
-                    <option value="second">Biology Second Paper</option>
-                    <option value="revision">Revision Classes</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="chapterSelect">Select Chapter:</label>
-                <select id="chapterSelect"></select>
-            </div>
-            
-            <div class="form-group" id="lectureGroup">
-                <label for="lectureSelect">Select Lecture:</label>
-                <select id="lectureSelect"></select>
-            </div>
-            
-            <div class="form-group">
-                <label for="videoId">YouTube Video ID:</label>
-                <input type="text" id="videoId" placeholder="Enter video ID (e.g., dQw4w9WgXcQ)">
-            </div>
-            
-            <div class="preview-box">
-                <h4>Preview:</h4>
-                <div id="preview"></div>
-            </div>
-            
-            <button id="updateBtn" class="btn-block">Update Lecture</button>
-        </div>
-        
-        <div class="tab-content" id="edit-content">
-            <h2>Edit Full Code</h2>
-            <p>Modify the entire lecture code below:</p>
-            <textarea id="fullCodeEditor"></textarea>
-            <button id="saveCodeBtn" class="btn-block btn-secondary">Save Code</button>
-        </div>
-        
-        <div class="tab-content" id="proceed-content">
-            <h2>Generated Code</h2>
-            <p>Your updated lecture code is ready:</p>
-            <div class="output-area">
-                <textarea id="outputCode" readonly></textarea>
-                <button id="copyBtn" class="copy-btn">Copy to Clipboard</button>
-            </div>
-            <button id="newSessionBtn" class="btn-block btn-warning">Start New Session</button>
-        </div>
-        
-        <div id="notification" class="notification">Changes saved successfully!</div>
+  <!-- Initial Loading Screen -->
+  <div class="loading-screen" id="initial-loading">
+    <div class="loading-content">
+      <div class="loading-text">Preparing Resources...</div>
+      <div class="loading-bar-container">
+        <div class="loading-bar" id="initial-loading-bar"></div>
+      </div>
+      <div class="loading-text" id="loading-status">Initializing caching system</div>
     </div>
+  </div>
 
-    <script>
-        // Initialize with sample data
+  <!-- Login Modal -->
+  <div class="login-overlay" id="login-overlay">
+    <div class="login-box">
+      <h3>Welcome to HP Plus</h3>
+      <input type="text" id="name" placeholder="Your Name" />
+      <input type="email" id="gmail" placeholder="Your Gmail" />
+      <input type="text" id="access" placeholder="Access Code" />
+      <button onclick="validateLogin()">Enter</button>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="image-modal" id="image-modal">
+    <span class="close-modal">&times;</span>
+    <div class="image-modal-content">
+      <img id="modal-image" src="" alt="Enlarged view">
+    </div>
+  </div>
+
+  <!-- Loading Screen for Classes -->
+  <div class="loading-screen" id="class-loading-screen" style="display:none;">
+    <div class="loading-content">
+      <img id="loading-image" src="" alt="Class Preview">
+      <div class="loading-text" id="loading-text">Loading Class...</div>
+      <div class="loading-bar-container">
+        <div class="loading-bar" id="loading-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coming Soon Notification -->
+  <div class="coming-soon-notification" id="coming-soon-notification">
+    <p>The class will be coming soon! Check back later</p>
+    <button onclick="closeComingSoonNotification()">OK</button>
+  </div>
+
+  <div class="channel-header" id="channel-header">
+    <video src="logo.mp4" autoplay muted loop playsinline></video>
+    <div class="channel-name">HP Plus <img src="https://cdn.shopify.com/s/files/1/0562/6105/0519/files/Untitled_480x480.png?v=1657512323" class="verified-icon"></div>
+  </div>
+
+  <div class="posts" id="posts-container">
+    <!-- Posts will be loaded here -->
+  </div>
+
+  <script>
+    // List of all media assets to cache
+    const mediaAssets = [
+      // Header video
+      'logo.mp4',
+      'https://cdn.shopify.com/s/files/1/0562/6105/0519/files/Untitled_480x480.png?v=1657512323',
+      
+      // Biology First Paper Revision Classes
+      'image/revision1.png',
+      
+      // Biology First Paper
+      'image/chap1.1.png',
+      'image/chap1.2.png',
+      'image/chap1.3.png',
+      'image/chap1.4.png',
+      'image/chap1.5.png',
+      'image/chap1.6.png',
+      'image/chap1.7.png',
+      'image/chap1.8.png',
+      'image/chap1.9.png',
+      'image/chap1.10.png',
+      'image/chap1.11.png',
+      'image/chap1.12.png',
+      
+      // Biology Second Paper Revision Classes
+      'image/revision2.png',
+      
+      // Biology Second Paper
+      'image/chap2.1.png',
+      'image/chap2.2.png',
+      'image/chap2.3.png',
+      'image/chap2.4.png',
+      'image/chap2.5.png',
+      'image/chap2.6.png',
+      'image/chap2.7.png',
+      'image/chap2.8.png',
+      'image/chap2.9.png',
+      'image/chap2.10.png',
+      'image/chap2.11.png',
+      'image/chap2.12.png'
+    ];
+    
+    // Posts data
 const posts = [
   // Biology First Paper Revision Classes
   {
@@ -758,216 +997,261 @@ const posts = [
     image: "image/chap2.12.png"
   }
 ];    
+    
+    // Initialize the page
+    window.addEventListener('DOMContentLoaded', async () => {
+      // Start caching process
+      await cacheAllMedia();
+      
+      // Check if user is logged in
+      const user = localStorage.getItem('hp_user');
+      if (user) {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+        showContent();
+      } else {
+        document.getElementById('login-overlay').style.display = 'flex';
+      }
+      
+      // Add event listeners
+      document.addEventListener('click', handleLinkClick);
+      
+      // Render posts
+      renderPosts();
+      
+      // Block right-click and copy
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
 
-
-        // Data structure to hold lectures
-        let posts = [...initialPosts];
-        let currentSession = [...initialPosts];
-
-        // DOM Elements
-        const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('.tab-content');
-        const paperSelect = document.getElementById('paperSelect');
-        const chapterSelect = document.getElementById('chapterSelect');
-        const lectureSelect = document.getElementById('lectureSelect');
-        const videoIdInput = document.getElementById('videoId');
-        const previewDiv = document.getElementById('preview');
-        const updateBtn = document.getElementById('updateBtn');
-        const fullCodeEditor = document.getElementById('fullCodeEditor');
-        const saveCodeBtn = document.getElementById('saveCodeBtn');
-        const outputCode = document.getElementById('outputCode');
-        const copyBtn = document.getElementById('copyBtn');
-        const newSessionBtn = document.getElementById('newSessionBtn');
-        const notification = document.getElementById('notification');
-        const lectureGroup = document.getElementById('lectureGroup');
-
-        // Initialize the app
-        function initApp() {
-            // Set up tab switching
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    tab.classList.add('active');
-                    document.getElementById(`${tab.dataset.tab}-content`).classList.add('active');
-                    
-                    // Special handling for Proceed tab
-                    if (tab.dataset.tab === 'proceed') {
-                        generateOutputCode();
-                    }
-                });
-            });
-            
-            // Populate paper options and initial chapters
-            populateChapters();
-            
-            // Set up event listeners
-            paperSelect.addEventListener('change', populateChapters);
-            chapterSelect.addEventListener('change', populateLectures);
-            lectureSelect.addEventListener('change', updatePreview);
-            videoIdInput.addEventListener('input', updatePreview);
-            updateBtn.addEventListener('click', updateLecture);
-            saveCodeBtn.addEventListener('click', saveFullCode);
-            copyBtn.addEventListener('click', copyToClipboard);
-            newSessionBtn.addEventListener('click', startNewSession);
-            
-            // Initialize full code editor
-            fullCodeEditor.value = JSON.stringify(currentSession, null, 2);
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === 'c' || e.key === 'x' || e.key === 'a')) {
+          e.preventDefault();
         }
+      });
 
-        // Populate chapters based on selected paper
-        function populateChapters() {
-            const paper = paperSelect.value;
-            chapterSelect.innerHTML = '';
-            
-            if (paper === 'revision') {
-                lectureGroup.style.display = 'none';
-                
-                // Add revision chapters
-                const revisionOption = document.createElement('option');
-                revisionOption.value = '0';
-                revisionOption.textContent = 'Biology First Paper Revision';
-                chapterSelect.appendChild(revisionOption);
-                
-                const secondRevisionOption = document.createElement('option');
-                secondRevisionOption.value = '1';
-                secondRevisionOption.textContent = 'Biology Second Paper Revision';
-                chapterSelect.appendChild(secondRevisionOption);
-            } else {
-                lectureGroup.style.display = 'block';
-                
-                // Add chapters for first paper
-                for (let i = 1; i <= 12; i++) {
-                    const option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = `Chapter ${i.toString().padStart(2, '0')} - ${paper === 'first' ? 'First' : 'Second'} Paper`;
-                    chapterSelect.appendChild(option);
-                }
-            }
-            
-            // Populate lectures for the first chapter
-            populateLectures();
+      /* Block zooming */
+      document.addEventListener('wheel', function(e) {
+        if (e.ctrlKey) {
+          e.preventDefault();
         }
+      }, { passive: false });
 
-        // Populate lectures based on selected chapter
-        function populateLectures() {
-            const paper = paperSelect.value;
-            const chapter = chapterSelect.value;
-            lectureSelect.innerHTML = '';
-            
-            if (paper === 'revision') {
-                // Revision classes don't have lectures
-                return;
-            }
-            
-            // Add lectures for the chapter
-            for (let i = 1; i <= 15; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = `Lecture ${i}`;
-                lectureSelect.appendChild(option);
-            }
-            
-            // Update preview
-            updatePreview();
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '0')) {
+          e.preventDefault();
         }
-
-        // Update the preview based on current selections
-        function updatePreview() {
-            const paper = paperSelect.value;
-            const chapter = chapterSelect.value;
-            const lecture = lectureSelect.value;
-            const videoId = videoIdInput.value || 'example';
-            
-            let previewText = '';
-            
-            if (paper === 'revision') {
-                previewText = `Revision Class: ${chapterSelect.options[chapterSelect.selectedIndex].text}<br>
-                Video ID: ${videoId}`;
-            } else {
-                previewText = `Paper: Biology ${paper === 'first' ? 'First' : 'Second'} Paper<br>
-                Chapter: ${chapterSelect.options[chapterSelect.selectedIndex].text}<br>
-                Lecture: ${lectureSelect.options[lectureSelect.selectedIndex].text}<br>
-                Video ID: ${videoId}`;
-            }
-            
-            previewDiv.innerHTML = previewText;
+      });
+    });
+    
+    // Cache all media assets
+    async function cacheAllMedia() {
+      const loadingBar = document.getElementById('initial-loading-bar');
+      const loadingStatus = document.getElementById('loading-status');
+      const totalAssets = mediaAssets.length;
+      let loadedCount = 0;
+      
+      for (const asset of mediaAssets) {
+        try {
+          loadingStatus.textContent = `Caching: ${asset}`;
+          
+          // Create a new image or video element to force loading
+          if (asset.endsWith('.mp4')) {
+            await loadVideo(asset);
+          } else {
+            await loadImage(asset);
+          }
+          
+          loadedCount++;
+          const progress = Math.round((loadedCount / totalAssets) * 100);
+          loadingBar.style.width = `${progress}%`;
+        } catch (error) {
+          console.error(`Failed to cache ${asset}:`, error);
+          loadedCount++;
         }
+      }
+    }
+    
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+    }
+    
+    function loadVideo(src) {
+      return new Promise((resolve, reject) => {
+        const video = document.createElement('video');
+        video.src = src;
+        video.preload = 'auto';
+        video.onloadeddata = resolve;
+        video.onerror = reject;
+      });
+    }
+    
+    // Show content after caching
+    function showContent() {
+      // Hide initial loading screen
+      document.getElementById('initial-loading').style.display = 'none';
+      
+      // Show main content
+      document.getElementById('channel-header').style.display = 'flex';
+      document.getElementById('posts-container').style.display = 'block';
+    }
+    
+    // Render posts to the page
+    function renderPosts() {
+      const container = document.getElementById("posts-container");
+      
+      posts.forEach(post => {
+        const div = document.createElement("div");
+        div.className = "post";
+        div.innerHTML = `
+          <div class="post-date">${post.date}</div>
+          <div class="post-text">${post.text}</div>
+          ${post.image ? `<img src="${post.image}" alt="Post Image">` : ""}
+        `;
+        container.appendChild(div);
+      });
+    }
+    
+    // Login validation
+    function validateLogin() {
+      const name = document.getElementById('name').value.trim();
+      const gmail = document.getElementById('gmail').value.trim();
+      const access = document.getElementById('access').value.trim();
 
-        // Update the lecture with the provided video ID
-        function updateLecture() {
-            const paper = paperSelect.value;
-            const chapter = chapterSelect.value;
-            const lecture = lectureSelect.value;
-            const videoId = videoIdInput.value.trim();
-            
-            if (!videoId) {
-                showNotification('Please enter a video ID', 'warning');
-                return;
-            }
-            
-            // In a real implementation, this would update the actual data structure
-            showNotification('Lecture updated successfully!');
-            
-            // Clear inputs
-            videoIdInput.value = '';
-            updatePreview();
+      const now = new Date();
+      const correctCode = `${now.getDate()}${now.getMonth() + 1}${now.getFullYear().toString().slice(-2)}`;
+
+      if (!name || !gmail || !access) {
+        alert('All fields required!');
+        return;
+      }
+
+      if (access !== correctCode) {
+        alert('Invalid Access Code!');
+        return;
+      }
+
+      localStorage.setItem('hp_user', JSON.stringify({ name, gmail }));
+      document.getElementById('login-overlay').style.display = 'none';
+      document.body.style.overflow = 'auto';
+      showContent();
+    }
+
+    // Image modal functionality
+    const imageModal = document.getElementById("image-modal");
+    const modalImg = document.getElementById("modal-image");
+    const closeModal = document.querySelector(".close-modal");
+
+    // When the user clicks on an image in a post
+    document.addEventListener('click', function(e) {
+      if (e.target.tagName === 'IMG' && e.target.closest('.post')) {
+        imageModal.style.display = "flex";
+        modalImg.src = e.target.src;
+      }
+    });
+
+    // When the user clicks on (x), close the modal
+    closeModal.onclick = function() {
+      imageModal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.addEventListener('click', function(event) {
+      if (event.target === imageModal) {
+        imageModal.style.display = "none";
+      }
+    });
+
+    // Coming soon notification
+    function showComingSoonNotification() {
+      document.getElementById('coming-soon-notification').style.display = 'block';
+    }
+
+    function closeComingSoonNotification() {
+      document.getElementById('coming-soon-notification').style.display = 'none';
+    }
+
+    // Loading screen functionality for classes
+    function showLoadingScreen(imgSrc, text, targetUrl) {
+      const loadingScreen = document.getElementById('class-loading-screen');
+      const loadingImage = document.getElementById('loading-image');
+      const loadingText = document.getElementById('loading-text');
+      const loadingBar = document.getElementById('loading-bar');
+      
+      // Reset loading bar & show screen
+      loadingBar.style.width = '0%';
+      loadingImage.src = imgSrc || '';
+      loadingText.textContent = text;
+      loadingScreen.style.display = 'flex';
+      
+      let width = 0;
+      const interval = setInterval(() => {
+        width++;
+        loadingBar.style.width = width + '%';
+        
+        if (width >= 100) {
+          clearInterval(interval);
+          // Hide loading screen right before redirect
+          loadingScreen.style.display = 'none';
+          window.location.href = targetUrl;
         }
+      }, 30);
+    }
 
-        // Save the full code from the editor
-        function saveFullCode() {
-            try {
-                const newCode = fullCodeEditor.value;
-                // In a real implementation, this would parse and validate the code
-                showNotification('Code saved successfully!');
-            } catch (e) {
-                showNotification('Error saving code: ' + e.message, 'error');
-            }
-        }
-
-        // Generate the output code for the Proceed tab
-        function generateOutputCode() {
-            // In a real implementation, this would generate the actual code
-            outputCode.value = JSON.stringify(posts, null, 2);
-        }
-
-        // Copy the output code to clipboard
-        function copyToClipboard() {
-            outputCode.select();
-            document.execCommand('copy');
-            showNotification('Code copied to clipboard!');
-        }
-
-        // Start a new session with initial data
-        function startNewSession() {
-            currentSession = [...initialPosts];
-            fullCodeEditor.value = JSON.stringify(currentSession, null, 2);
-            showNotification('New session started');
-        }
-
-        // Show notification
-        function showNotification(message, type = 'success') {
-            notification.textContent = message;
-            notification.className = 'notification show';
-            
-            if (type === 'error') {
-                notification.style.backgroundColor = 'var(--danger)';
-            } else if (type === 'warning') {
-                notification.style.backgroundColor = 'var(--warning)';
-            } else {
-                notification.style.backgroundColor = 'var(--success)';
-            }
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Initialize the application when the page loads
-        window.addEventListener('DOMContentLoaded', initApp);
-    </script>
+    // Handle link clicks
+    function handleLinkClick(e) {
+      let target = e.target.closest('a');
+      if (!target) return;
+      
+      if (target.textContent.toLowerCase().includes('coming soon') || 
+          target.classList.contains('coming-soon')) {
+        e.preventDefault();
+        showComingSoonNotification();
+        return;
+      }
+      
+      if (target.getAttribute('target') === '_self') {
+        e.preventDefault();
+        
+        const post = target.closest('.post');
+        if (!post) return;
+        
+        let imgSrc = '';
+        const img = post.querySelector('img');
+        if (img) imgSrc = img.src;
+        
+        const chapterInfo = post.querySelector('.post-text').textContent.split('\n')[0].trim();
+        
+        showLoadingScreen(imgSrc, `Loading: ${chapterInfo}`, target.href);
+      }
+    }
+    
+    // Hide Coming Soon lectures
+    function hideComingSoonLectures() {
+      const posts = document.querySelectorAll('.post');
+      
+      posts.forEach(post => {
+        const postText = post.querySelector('.post-text');
+        if (!postText) return;
+        
+        const lines = postText.innerHTML.split('<br>');
+        const filteredLines = lines.filter(line => {
+          return !line.includes('Coming Soon</a>');
+        });
+        
+        postText.innerHTML = filteredLines.join('<br>');
+      });
+    }
+    
+    // Call this function after content is shown
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(hideComingSoonLectures, 500);
+    });
+  </script>
 </body>
 </html>
