@@ -523,7 +523,7 @@
     <!-- Posts will be loaded here -->
   </div>
 
-  <script>
+<script>
     // List of all media assets to cache
     const mediaAssets = [
       // Header video
@@ -997,19 +997,26 @@ const posts = [
     image: "image/chap2.12.png"
   }
 ];    
+
+
     // Initialize the page
     window.addEventListener('DOMContentLoaded', async () => {
-      // Start caching process
-      await cacheAllMedia();
-      
-      // Check if user is logged in
+      // Check login first
       const user = localStorage.getItem('hp_user');
-      if (user) {
-        document.getElementById('login-overlay').style.display = 'none';
-        document.body.style.overflow = 'auto';
-        showContent();
-      } else {
+      if (!user) {
         document.getElementById('login-overlay').style.display = 'flex';
+      }
+      
+      // Start caching process
+      try {
+        await cacheAllMedia();
+      } catch (error) {
+        console.error('Caching error:', error);
+      } finally {
+        // Show content if logged in, regardless of caching success
+        if (user) {
+          showContent();
+        }
       }
       
       // Add event listeners
@@ -1050,9 +1057,18 @@ const posts = [
       const totalAssets = mediaAssets.length;
       let loadedCount = 0;
       
+      // Add timeout fallback
+      const loadingTimeout = setTimeout(() => {
+        if (loadedCount < totalAssets) {
+          console.warn('Loading timeout, proceeding with available assets');
+          loadingBar.style.width = '100%';
+          loadingStatus.textContent = 'Ready!';
+        }
+      }, 15000); // 15 second timeout
+      
       for (const asset of mediaAssets) {
         try {
-          loadingStatus.textContent = `Please Wait, Loading...`;
+          loadingStatus.textContent = `Loading ${asset.split('/').pop()}...`;
           
           // Create a new image or video element to force loading
           if (asset.endsWith('.mp4')) {
@@ -1064,9 +1080,15 @@ const posts = [
           loadedCount++;
           const progress = Math.round((loadedCount / totalAssets) * 100);
           loadingBar.style.width = `${progress}%`;
+          
+          // Clear timeout if everything loaded
+          if (loadedCount === totalAssets) {
+            clearTimeout(loadingTimeout);
+            loadingStatus.textContent = 'All resources loaded!';
+          }
         } catch (error) {
           console.error(`Failed to cache ${asset}:`, error);
-          loadedCount++;
+          // Continue with next asset
         }
       }
     }
@@ -1085,7 +1107,8 @@ const posts = [
         const video = document.createElement('video');
         video.src = src;
         video.preload = 'auto';
-        video.onloadeddata = resolve;
+        video.load();
+        video.oncanplaythrough = resolve;
         video.onerror = reject;
       });
     }
@@ -1098,6 +1121,7 @@ const posts = [
       // Show main content
       document.getElementById('channel-header').style.display = 'flex';
       document.getElementById('posts-container').style.display = 'block';
+      document.body.style.overflow = 'auto';
     }
     
     // Render posts to the page
@@ -1251,6 +1275,6 @@ const posts = [
     window.addEventListener('DOMContentLoaded', () => {
       setTimeout(hideComingSoonLectures, 500);
     });
-  </script>
+</script>
 </body>
 </html>
