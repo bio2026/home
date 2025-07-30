@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,18 +46,6 @@
       line-height: 1.6;
       overflow-x: hidden;
       font-size: 16px;
-    }
-
-    /* Coming Soon Styling */
-    .coming-soon {
-      color: #888 !important;
-      cursor: not-allowed;
-      pointer-events: none;
-      text-decoration: none !important;
-    }
-    
-    .coming-soon:hover {
-      color: #888 !important;
     }
 
     /* Image Modal Styles */
@@ -411,39 +398,6 @@
         padding: 4px 6px;
       }
     }
-
-    /* Notification for Coming Soon */
-    .coming-soon-notification {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.9);
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid #3da6ff;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-      z-index: 3000;
-      display: none;
-      max-width: 90%;
-      text-align: center;
-    }
-    
-    .coming-soon-notification p {
-      font-size: 1.2rem;
-      color: #fff;
-      margin-bottom: 15px;
-    }
-    
-    .coming-soon-notification button {
-      background: #3da6ff;
-      color: white;
-      border: none;
-      padding: 8px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-    }
   
     .verified-badge {
       display: inline-flex;
@@ -509,17 +463,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Coming Soon Notification -->
-  <div class="coming-soon-notification" id="coming-soon-notification">
-    <p>The class will be coming soon! Check back later</p>
-    <button onclick="closeComingSoonNotification()">OK</button>
-  </div>
-
-<div id="user-info" style="display:none; text-align:center; margin-top:20px;">
-  Welcome, <span id="user-name"></span> (<span id="user-gmail"></span>)
-  <button onclick="logout()" style="margin-left:10px;">Log out</button>
-</div>
   
 <div class="channel-header" id="channel-header">
     <video src="logo.mp4" autoplay muted loop playsinline></video>
@@ -533,14 +476,9 @@
 <script>
   // List of all media assets to cache
   const mediaAssets = [
-    // Header video
     'logo.mp4',
     'https://cdn.shopify.com/s/files/1/0562/6105/0519/files/Untitled_480x480.png?v=1657512323',
-
-    // Biology First Paper Revision Classes
     'image/revision1.png',
-
-    // Biology First Paper
     'image/chap1.1.png',
     'image/chap1.2.png',
     'image/chap1.3.png',
@@ -553,11 +491,7 @@
     'image/chap1.10.png',
     'image/chap1.11.png',
     'image/chap1.12.png',
-
-    // Biology Second Paper Revision Classes
     'image/revision2.png',
-
-    // Biology Second Paper
     'image/chap2.1.png',
     'image/chap2.2.png',
     'image/chap2.3.png',
@@ -572,7 +506,7 @@
     'image/chap2.12.png'
   ];
 
-  // Posts data
+  // Posts data (truncated for brevity - keep your full posts array here)
 const posts = [
   // Biology First Paper Revision Classes
   {
@@ -1008,109 +942,74 @@ const posts = [
 
   // Initialize the page
   window.addEventListener('DOMContentLoaded', () => {
+    // Check login status
     const user = localStorage.getItem('hp_user');
     if (user) {
-      showUserInfo(); // Show user info if logged in
       document.getElementById('login-overlay').style.display = 'none';
       document.getElementById('initial-loading').style.display = 'flex';
       startCachingProcess();
     } else {
       document.getElementById('login-overlay').style.display = 'flex';
-      document.getElementById('user-info').style.display = 'none';
     }
 
-    // Add event listeners
+    // Set up event listeners
     document.addEventListener('click', handleLinkClick);
-
-    // Render posts
+    setupImageModal();
+    setupCopyProtection();
+    
+    // Render content
     renderPosts();
-
-    // Block right-click and copy
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-    });
-
-    document.addEventListener('keydown', function(e) {
-      if (e.ctrlKey && (e.key === 'c' || e.key === 'x' || e.key === 'a')) {
-        e.preventDefault();
-      }
-    });
-
-    /* Block zooming */
-    document.addEventListener('wheel', function(e) {
-      if (e.ctrlKey) {
-        e.preventDefault();
-      }
-    }, { passive: false });
-
-    document.addEventListener('keydown', function(e) {
-      if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '0')) {
-        e.preventDefault();
-      }
-    });
   });
 
-  // Cache all media assets
+  // ========== CORE FUNCTIONS ========== //
+
+  async function startCachingProcess() {
+    await cacheAllMedia();
+    showContent();
+  }
+
   async function cacheAllMedia() {
     const loadingBar = document.getElementById('initial-loading-bar');
     const loadingStatus = document.getElementById('loading-status');
     const totalAssets = mediaAssets.length;
-    let loadedCount = 0;
-
-    for (const asset of mediaAssets) {
+    
+    for (let i = 0; i < totalAssets; i++) {
       try {
-        loadingStatus.textContent = `Caching: ${asset}`;
-
-        // Create a new image or video element to force loading
-        if (asset.endsWith('.mp4')) {
-          await loadVideo(asset);
-        } else {
-          await loadImage(asset);
-        }
-
-        loadedCount++;
-        const progress = Math.round((loadedCount / totalAssets) * 100);
-        loadingBar.style.width = `${progress}%`;
+        loadingStatus.textContent = `Caching: ${mediaAssets[i]}`;
+        await loadAsset(mediaAssets[i]);
+        loadingBar.style.width = `${Math.round(((i + 1) / totalAssets) * 100)}%`;
       } catch (error) {
-        console.error(`Failed to cache ${asset}:`, error);
-        loadedCount++;
+        console.error(`Failed to cache ${mediaAssets[i]}:`, error);
       }
     }
   }
 
-  function loadImage(src) {
+  function loadAsset(src) {
     return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = resolve;
-      img.onerror = reject;
+      if (src.endsWith('.mp4')) {
+        const video = document.createElement('video');
+        video.src = src;
+        video.preload = 'auto';
+        video.onloadeddata = resolve;
+        video.onerror = reject;
+      } else {
+        const img = new Image();
+        img.src = src;
+        img.onload = resolve;
+        img.onerror = reject;
+      }
     });
   }
 
-  function loadVideo(src) {
-    return new Promise((resolve, reject) => {
-      const video = document.createElement('video');
-      video.src = src;
-      video.preload = 'auto';
-      video.onloadeddata = resolve;
-      video.onerror = reject;
-    });
-  }
-
-  // Show content after caching
   function showContent() {
-    // Hide initial loading screen
     document.getElementById('initial-loading').style.display = 'none';
-
-    // Show main content
     document.getElementById('channel-header').style.display = 'flex';
     document.getElementById('posts-container').style.display = 'block';
-
-    // Allow scrolling
     document.body.style.overflow = 'auto';
   }
 
-  // Render posts to the page
+  // ========== POSTS MANAGEMENT ========== //
+
   function renderPosts() {
     const container = document.getElementById("posts-container");
     container.innerHTML = ""; // Clear previous posts
@@ -1118,159 +1017,132 @@ const posts = [
     posts.forEach(post => {
       const div = document.createElement("div");
       div.className = "post";
+      
+      // Process the post text to hide example lectures
+      const processedText = processPostText(post.text);
+      
       div.innerHTML = `
         <div class="post-date">${post.date}</div>
-        <div class="post-text">${post.text}</div>
+        <div class="post-text">${processedText}</div>
         ${post.image ? `<img src="${post.image}" alt="Post Image">` : ""}
       `;
       container.appendChild(div);
     });
   }
 
+  function processPostText(text) {
+    // Split the text into lines
+    const lines = text.split('<br>');
+    
+    // Filter out lines containing example links
+    const filteredLines = lines.filter(line => {
+      // Skip empty lines
+      if (!line.trim()) return true;
+      
+      // Check if line contains an example link
+      const hasExampleLink = line.includes('?v=example') || 
+                           (line.includes('href=') && line.includes('example'));
+      
+      return !hasExampleLink;
+    });
+    
+    // Join the remaining lines back together
+    return filteredLines.join('<br>');
+  }
+
+  // ========== LOGIN SYSTEM ========== //
+
   function validateLogin() {
     const name = document.getElementById('name').value.trim();
     const gmail = document.getElementById('gmail').value.trim();
     const access = document.getElementById('access').value.trim();
-
-    // Generate access code in format: DDMMYY
     const now = new Date();
     const correctCode = `${now.getDate()}${now.getMonth() + 1}${now.getFullYear().toString().slice(-2)}`;
 
-    if (!name || !gmail || !access) {
-      alert('All fields required!');
-      return;
-    }
-    if (access !== correctCode) {
-      alert('Invalid Access Code!');
-      return;
-    }
+    if (!name || !gmail || !access) return alert('All fields required!');
+    if (access !== correctCode) return alert('Invalid Access Code!');
 
-    // Save user info to localStorage
     localStorage.setItem('hp_user', JSON.stringify({ name, gmail }));
-
-    // Hide login modal
     document.getElementById('login-overlay').style.display = 'none';
-
-    // Show user info block
-    showUserInfo();
-
-    // Show initial loading screen and start caching
     document.getElementById('initial-loading').style.display = 'flex';
     startCachingProcess();
   }
 
-  // Start caching process
-  async function startCachingProcess() {
-    await cacheAllMedia();
-    showContent();
+  // ========== UI INTERACTIONS ========== //
+
+  function handleLinkClick(e) {
+    let target = e.target.closest('a');
+    if (!target || target.getAttribute('target') !== '_self') return;
+
+    e.preventDefault();
+    const post = target.closest('.post');
+    if (!post) return;
+
+    let imgSrc = '';
+    const img = post.querySelector('img');
+    if (img) imgSrc = img.src;
+
+    const chapterInfo = post.querySelector('.post-text').textContent.split('\n')[0].trim();
+    showLoadingScreen(imgSrc, `Loading: ${chapterInfo}`, target.href);
   }
-
-  // Image modal functionality
-  const imageModal = document.getElementById("image-modal");
-  const modalImg = document.getElementById("modal-image");
-  const closeModal = document.querySelector(".close-modal");
-
-  // When the user clicks on an image in a post
-  document.addEventListener('click', function(e) {
-    if (e.target.tagName === 'IMG' && e.target.closest('.post')) {
-      imageModal.style.display = "flex";
-      modalImg.src = e.target.src;
-    }
-  });
-
-  // When the user clicks on (x), close the modal
-  closeModal.onclick = function() {
-    imageModal.style.display = "none";
-  }
-
-  // When the user clicks anywhere outside of the modal, close it
-  window.addEventListener('click', function(event) {
-    if (event.target === imageModal) {
-      imageModal.style.display = "none";
-    }
-  });
-
-  // Coming soon notification
-  function showComingSoonNotification() {
-    document.getElementById('coming-soon-notification').style.display = 'block';
-  }
-
-  function closeComingSoonNotification() {
-    document.getElementById('coming-soon-notification').style.display = 'none';
-  }
-
-  // Loading screen functionality for classes
   function showLoadingScreen(imgSrc, text, targetUrl) {
     const loadingScreen = document.getElementById('class-loading-screen');
-    const loadingImage = document.getElementById('loading-image');
-    const loadingText = document.getElementById('loading-text');
     const loadingBar = document.getElementById('loading-bar');
-
-    // Reset loading bar & show screen
-    loadingBar.style.width = '0%';
-    loadingImage.src = imgSrc || '';
-    loadingText.textContent = text;
+    
+    document.getElementById('loading-image').src = imgSrc || '';
+    document.getElementById('loading-text').textContent = `Loading: ${text}`;
     loadingScreen.style.display = 'flex';
+    loadingBar.style.width = '0%';
 
     let width = 0;
     const interval = setInterval(() => {
       width++;
-      loadingBar.style.width = width + '%';
-
+      loadingBar.style.width = `${width}%`;
       if (width >= 100) {
         clearInterval(interval);
-        // Hide loading screen right before redirect
         loadingScreen.style.display = 'none';
         window.location.href = targetUrl;
       }
     }, 30);
   }
 
-  // Handle link clicks
-  function handleLinkClick(e) {
-    let target = e.target.closest('a');
-    if (!target) return;
+  function setupImageModal() {
+    const imageModal = document.getElementById("image-modal");
+    const modalImg = document.getElementById("modal-image");
+    const closeModal = document.querySelector(".close-modal");
 
-    if (target.textContent.toLowerCase().includes('coming soon') ||
-      target.classList.contains('coming-soon')) {
-      e.preventDefault();
-      showComingSoonNotification();
-      return;
-    }
+    // Click on post images
+    document.addEventListener('click', (e) => {
+      if (e.target.tagName === 'IMG' && e.target.closest('.post')) {
+        imageModal.style.display = "flex";
+        modalImg.src = e.target.src;
+      }
+    });
 
-    if (target.getAttribute('target') === '_self') {
-      e.preventDefault();
-
-      const post = target.closest('.post');
-      if (!post) return;
-
-      let imgSrc = '';
-      const img = post.querySelector('img');
-      if (img) imgSrc = img.src;
-
-      const chapterInfo = post.querySelector('.post-text').textContent.split('\n')[0].trim();
-
-      showLoadingScreen(imgSrc, `Loading: ${chapterInfo}`, target.href);
-    }
+    // Close modal
+    closeModal.onclick = () => imageModal.style.display = "none";
+    window.addEventListener('click', (e) => {
+      if (e.target === imageModal) imageModal.style.display = "none";
+    });
   }
 
-  function showUserInfo() {
-    const user = JSON.parse(localStorage.getItem('hp_user'));
-    if (user) {
-      document.getElementById('user-info').style.display = 'block';
-      document.getElementById('user-name').textContent = user.name;
-      document.getElementById('user-gmail').textContent = user.gmail;
-    } else {
-      document.getElementById('user-info').style.display = 'none';
-    }
-  }
+  // ========== SECURITY ========== //
 
-  function logout() {
-    localStorage.removeItem('hp_user');
-    document.getElementById('user-info').style.display = 'none';
-    document.getElementById('login-overlay').style.display = 'flex';
-    // Optionally, you may reload the page:
-    // window.location.reload();
+  function setupCopyProtection() {
+    // Block right-click
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    
+    // Block copy shortcuts
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && ['c', 'x', 'a', '+', '-', '0'].includes(e.key)) {
+        e.preventDefault();
+      }
+    });
+
+    // Block zooming
+    document.addEventListener('wheel', e => {
+      if (e.ctrlKey) e.preventDefault();
+    }, { passive: false });
   }
 </script>
 </body>
