@@ -1401,7 +1401,7 @@ const lectures = {
       1: { id: "D3sjB3mDZaw", title: "সমন্বয় ও নিয়ন্ত্রণ - Lecture 1" },
       2: { id: "y-fFKjKlGVc", title: "সমন্বয় ও নিয়ন্ত্রণ - Lecture 2" },
       3: { id: "y3yMn6YxYkM", title: "সমন্বয় ও নিয়ন্ত্রণ - Lecture 3" },
-      4: { id: null, title: "সমন্বয় ও নিয়ন্ত্রণ - Lecture 4" },
+      4: { id: "qfu1mM3PxxY", title: "সমন্বয় ও নিয়ন্ত্রণ - Lecture 4" },
       5: { id: null, title: "সমন্বয় ও নিয়ন্ত্রণ - Lecture 5" },
       6: { id: null, title: "সমন্বয় ও নিয়ন্ত্রণ - Lecture 6" },
       7: { id: null, title: "সমন্বয় ও নিয়ন্ত্রণ - Lecture 7" },
@@ -1967,7 +1967,46 @@ document.addEventListener('touchend', (event) => {
   }
   lastTouchEnd = now;
 }, false);
+// Add this at the end of your script
+function filterNullLectures() {
+  // Filter related lectures
+  const relatedLecturesContainer = document.getElementById('related-lectures');
+  const relatedCards = relatedLecturesContainer.querySelectorAll('.lecture-card');
+  
+  relatedCards.forEach(card => {
+    const img = card.querySelector('img');
+    if (img && img.src.includes('vi/null/')) {
+      card.remove();
+    }
+  });
 
+  // Filter more lectures
+  const moreLecturesContainer = document.getElementById('more-lectures');
+  const moreCards = moreLecturesContainer.querySelectorAll('.lecture-card');
+  
+  moreCards.forEach(card => {
+    const img = card.querySelector('img');
+    if (img && img.src.includes('vi/null/')) {
+      card.remove();
+    }
+  });
+
+  // Hide "Load More" button if no more valid lectures
+  const moreBtn = document.getElementById('more-btn');
+  if (moreLecturesContainer.children.length === 0) {
+    moreBtn.style.display = 'none';
+  }
+}
+
+// Call it after initialization
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(filterNullLectures, 1000); // Wait 1 second for all cards to render
+});
+
+// Also call it when loading more lectures
+document.getElementById('more-btn')?.addEventListener('click', () => {
+  setTimeout(filterNullLectures, 500);
+});
 </script>
 </body>
 </html>
